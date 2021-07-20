@@ -10,6 +10,7 @@ namespace GameJamProject
     public class Object
     {
         public Vector2 Position;
+        public bool despawned = false;
         
         public Object(Vector2 position)
         {
@@ -23,7 +24,12 @@ namespace GameJamProject
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            
+        }
 
+        public void Despawn()
+        {
+            despawned = true;
         }
     }
 }

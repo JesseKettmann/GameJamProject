@@ -19,7 +19,11 @@ namespace GameJamProject
         public virtual void Update(GameTime gameTime)
         {
             for (int i = objects.Count - 1; i >= 0; i--)
+            {
                 objects[i].Update(gameTime);
+                if (objects[i].despawned)
+                    objects.RemoveAt(i);
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

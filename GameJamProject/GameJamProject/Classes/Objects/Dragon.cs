@@ -25,8 +25,10 @@ namespace GameJamProject
         float segmentLength = 16 * Game1.pixelScale;
         int segmentListSize = 20;
 
-        bool started = false;
+        // Gameplay
+        public bool started = false;
         float startY;
+        float hitstop = 0;
 
         public Dragon(Vector2 position) : base(position)
         {
@@ -36,24 +38,29 @@ namespace GameJamProject
 
         public override void Update(GameTime gameTime)
         {
-            // Movement
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (started)
+            if (hitstop < 0.0001f)
             {
-                direction = Input.KeyDown(Keys.Space) ? 1 : -1;
-            } else
-            {
-                direction = Math.Sign(Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10) + (Position.Y - startY) / 200);
-            }
-            headAngle += direction * turnSpeed * deltaTime;
-            if (headAngle < 0)
-                headAngle += (float)Math.PI * 2;
-            Position += new Vector2((float)Math.Cos(headAngle) * moveSpeed, -(float)Math.Sin(headAngle) * moveSpeed) * deltaTime;
+                // Movement
+                if (started)
+                {
+                    direction = Input.KeyDown(Keys.Space) ? 1 : -1;
+                }
+                else
+                {
+                    direction = Math.Sign(Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10) + (Position.Y - startY) / 200);
+                }
+                headAngle += direction * turnSpeed * deltaTime;
+                if (headAngle < 0)
+                    headAngle += (float)Math.PI * 2;
+                Position += new Vector2((float)Math.Cos(headAngle) * moveSpeed, -(float)Math.Sin(headAngle) * moveSpeed) * deltaTime;
 
-            // Segments
-            SegmentPositions.Insert(0, Position);
-            if (SegmentPositions.Count > segmentListSize)
-                SegmentPositions.RemoveAt(SegmentPositions.Count - 1);
+                // Segments
+                SegmentPositions.Insert(0, Position);
+                if (SegmentPositions.Count > segmentListSize)
+                    SegmentPositions.RemoveAt(SegmentPositions.Count - 1);
+            }
+            else hitstop -= deltaTime;
 
             // Start
             if (Input.KeyDown(Keys.Space))

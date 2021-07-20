@@ -7,15 +7,15 @@ using Microsoft.Xna.Framework.Input;
 
 namespace GameJamProject
 {
-    public class Camera
+    public static class Camera
     {
-        private float cameraSpeed = 1f;
-        public Vector2 Location;
+        private static float cameraSpeed = 1f;
+        public static Vector2 Location;
 
-        public Rectangle Bounds { get; set; }
-        public float targetX;
+        public static Rectangle Bounds { get; set; }
+        public static float targetX;
 
-        public Matrix TransformMatrix
+        public static Matrix TransformMatrix
         {
             get
             {
@@ -25,18 +25,18 @@ namespace GameJamProject
             }
         }
 
-        public Camera(Point viewport, Vector2 position)
+        public static void Initialise(Point viewport, Vector2 position)
         {
             Bounds = new Rectangle(0, 0, viewport.X, viewport.Y);
             Location = position;
             targetX = position.X;
         }
 
-        public void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
             Location.X = MathHelper.Lerp(Location.X, targetX, cameraSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
-            this.Location = Vector2.Round(this.Location);
+            Location = Vector2.Round(Location);
             Game1.cameraMatrix = TransformMatrix;
         }
     }
