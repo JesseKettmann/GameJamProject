@@ -9,17 +9,19 @@ namespace GameJamProject
 {
     public class Object
     {
-        public Object()
+        public Vector2 Position;
+        
+        public Object(Vector2 position)
+        {
+            Position = position;
+        }
+
+        public virtual void Update(GameTime gameTime)
         {
 
         }
 
-        public void Update(GameTime gameTime)
-        {
-
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
 
         }

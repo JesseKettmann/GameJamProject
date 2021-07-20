@@ -1,6 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace GameJamProject
 {
@@ -8,34 +11,63 @@ namespace GameJamProject
     {
         public static Game1 gameInstance;
         private Gamestate gamestate;
+        public static Matrix cameraMatrix;
 
         // Rendering
-        private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        public Point viewSize = new Point(1920, 1080);
-        public Point portSize = new Point(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height);
+        public Point viewSize = new Point(1366, 768);
+        public Point portSize = new Point(1366, 768);
+        //public Point portSize = new Point(1920, 1080);
         public float viewScale = 1f;
-        public static GraphicsDevice graphicsDevice;
+        private GraphicsDeviceManager _graphics;
+        public static float pixelScale = 4f;
         public RenderTarget2D renderTarget;
+        public static GraphicsDevice graphicsDevice;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            gameInstance = this;
-
-            // Rendering
             IsMouseVisible = true;
-            graphicsDevice = GraphicsDevice;
+
+            // Global
+            gameInstance = this;
+        }
+
+        protected override void Initialize()
+        {
+            // Rendering
+            _graphics.PreferredBackBufferWidth = portSize.X;
+            _graphics.PreferredBackBufferHeight = portSize.Y;
+            _graphics.IsFullScreen = false; // Start in fullscreen mode
+            _graphics.ApplyChanges();
+            viewScale = 1f / ((float)viewSize.Y / portSize.Y);
+
+            base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            gamestate = new Menu();
+            gamestate = new Level();
 
             // Rendering
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            graphicsDevice = GraphicsDevice;
+            _spriteBatch = new SpriteBatch(graphicsDevice);
             renderTarget = new RenderTarget2D(graphicsDevice, viewSize.X, viewSize.Y, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
+            SpriteManager.Initialise();
+
+            // Textures
+            SpriteManager.AddTexture("TexDragon", "chinese_dragon");
+
+            SpriteManager.AddTexture("TexSky", "skybox");
+
+            // Sprites
+            SpriteManager.AddSprite("SprDragonHead", "TexDragon", new Vector2(8, 5.5f), new Rectangle(48, 0, 16, 11));
+            SpriteManager.AddSprite("SprDragonBody", "TexDragon", new Vector2(16, 5.5f), new Rectangle(16, 0, 16, 11));
+            SpriteManager.AddSprite("SprDragonArm", "TexDragon", new Vector2(16, 5.5f), new Rectangle(32, 0, 16, 11));
+            SpriteManager.AddSprite("SprDragonTail", "TexDragon", new Vector2(16, 5.5f), new Rectangle(0, 0, 16, 11));
+
+            SpriteManager.AddSprite("SprSky", "TexSky", Vector2.Zero);
         }
 
         protected override void Update(GameTime gameTime)
@@ -64,7 +96,7 @@ namespace GameJamProject
             graphicsDevice.SetRenderTarget(renderTarget);
             graphicsDevice.Clear(Color.Transparent);
 
-            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: cameraMatrix, samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: cameraMatrix, samplerState: SamplerState.PointClamp);
             gamestate.Draw(_spriteBatch);
             _spriteBatch.End();
 

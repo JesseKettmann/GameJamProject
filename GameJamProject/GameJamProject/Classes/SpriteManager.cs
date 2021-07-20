@@ -11,8 +11,8 @@ namespace GameJamProject
     {
         private static Dictionary<string, Texture2D> textures;
         public static Dictionary<string, Sprite> sprites;
-        public static int depthMin = 0;
-        public static int depthMax = 1;
+        private static int depthMin = 0;
+        private static int depthMax = 1;
 
         public static void Initialise()
         {
@@ -41,12 +41,13 @@ namespace GameJamProject
         }
 
         // Default drawing method
-        public static void DrawSprite(SpriteBatch spriteBatch, Sprite sprite, Vector2 position, Color color, int depth = 0, float rotation = 0, SpriteEffects spriteEffect = SpriteEffects.None)
+        public static void DrawSprite(SpriteBatch spriteBatch, string _sprite, Vector2 position, Color color, int depth = 0, float rotation = 0, SpriteEffects spriteEffect = SpriteEffects.None)
         {
             depthMin = Math.Min(depthMin, depth);
             depthMax = Math.Max(depthMax, depth);
-            float _depth = (depth - depthMin) / (depthMax - depthMin);
-            spriteBatch.Draw(sprite.Texture, position, sprite.Source, color, -rotation, sprite.Origin, 1f, spriteEffect, _depth);
+            float _depth = (depth - (float)depthMin) / (depthMax - depthMin);
+            Sprite sprite = sprites[_sprite];
+            spriteBatch.Draw(sprite.Texture, position, sprite.Source, color, -rotation, sprite.Origin, Game1.pixelScale, spriteEffect, _depth);
         }
     }
 }

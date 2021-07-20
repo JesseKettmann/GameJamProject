@@ -9,20 +9,20 @@ namespace GameJamProject
 {
     public class Gamestate
     {
-        private List<Object> objects;
+        protected List<Object> objects;
 
         public Gamestate()
         {
             objects = new List<Object>();
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             for (int i = objects.Count - 1; i >= 0; i--)
                 objects[i].Update(gameTime);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             for (int i = objects.Count - 1; i >= 0; i--)
                 objects[i].Draw(spriteBatch);
