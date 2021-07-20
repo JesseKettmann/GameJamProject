@@ -11,6 +11,7 @@ namespace GameJamProject
     {
         private static Dictionary<string, Texture2D> textures;
         public static Dictionary<string, Sprite> sprites;
+        public static Dictionary<string, SpriteFont> fonts;
         private static int depthMin = 0;
         private static int depthMax = 1;
 
@@ -18,6 +19,7 @@ namespace GameJamProject
         {
             textures = new Dictionary<string, Texture2D>();
             sprites = new Dictionary<string, Sprite>();
+            fonts = new Dictionary<string, SpriteFont>();
         }
 
         public static void AddTexture(string name, string fileName)
@@ -39,6 +41,25 @@ namespace GameJamProject
             Sprite sprite = new Sprite(texture, origin, new Rectangle(0, 0, texture.Width, texture.Height));
             sprites.Add(name, sprite);
         }
+
+        public static void AddFont(string name, string _font)
+        {
+            SpriteFont font = Game1.gameInstance.Content.Load<SpriteFont>("Fonts/" + _font);
+            fonts.Add(name, font);
+        }
+
+        public static SpriteFont GetFont(string name)
+        {
+            SpriteFont f;
+            if(fonts.TryGetValue(name, out f))
+            {
+                return f;
+            } else
+            {
+                return null;
+            }
+        }
+
 
         // Default drawing method
         public static void DrawSprite(SpriteBatch spriteBatch, string _sprite, Vector2 position, Color color, int depth = 0, float rotation = 0, SpriteEffects spriteEffect = SpriteEffects.None)

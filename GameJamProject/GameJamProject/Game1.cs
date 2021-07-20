@@ -48,7 +48,6 @@ namespace GameJamProject
 
         protected override void LoadContent()
         {
-            gamestate = new Level();
 
             // Rendering
             graphicsDevice = GraphicsDevice;
@@ -68,6 +67,12 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprDragonTail", "TexDragon", new Vector2(16, 5.5f), new Rectangle(0, 0, 16, 11));
 
             SpriteManager.AddSprite("SprSky", "TexSky", Vector2.Zero);
+
+
+            SpriteManager.AddFont("BigFont", "BigFont");
+
+            gamestate = new Level();
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -98,6 +103,12 @@ namespace GameJamProject
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: cameraMatrix, samplerState: SamplerState.PointClamp);
             gamestate.Draw(_spriteBatch);
+            _spriteBatch.End();
+
+
+            //Draw gamestate UI
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp);
+            gamestate.DrawUI(_spriteBatch);
             _spriteBatch.End();
 
             // Reset render target

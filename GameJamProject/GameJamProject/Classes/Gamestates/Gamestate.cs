@@ -27,5 +27,10 @@ namespace GameJamProject
             for (int i = objects.Count - 1; i >= 0; i--)
                 objects[i].Draw(spriteBatch);
         }
+
+        public virtual void DrawUI(SpriteBatch spriteBatch)
+        {
+            
+        }
     }
 }
