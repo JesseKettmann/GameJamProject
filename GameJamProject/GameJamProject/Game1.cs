@@ -10,8 +10,9 @@ namespace GameJamProject
     public class Game1 : Game
     {
         public static Game1 gameInstance;
-        private Gamestate gamestate;
+        public Gamestate gamestate;
         public static Matrix cameraMatrix;
+        public static Random random;
 
         // Rendering
         private SpriteBatch _spriteBatch;
@@ -32,6 +33,7 @@ namespace GameJamProject
 
             // Global
             gameInstance = this;
+            random = new Random();
         }
 
         protected override void Initialize()
@@ -48,7 +50,6 @@ namespace GameJamProject
 
         protected override void LoadContent()
         {
-            gamestate = new Level();
 
             // Rendering
             graphicsDevice = GraphicsDevice;
@@ -90,6 +91,10 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprGate", "TexBuildings", new Vector2(24, 48), new Rectangle(240, 16, 48, 48));
 
             SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(8, 22), new Rectangle(288, 42, 16, 22));
+
+            SpriteManager.AddFont("BigFont", "BigFont");
+
+            gamestate = new Level();
         }
 
         protected override void Update(GameTime gameTime)
@@ -120,6 +125,12 @@ namespace GameJamProject
 
             _spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: cameraMatrix, samplerState: SamplerState.PointClamp);
             gamestate.Draw(_spriteBatch);
+            _spriteBatch.End();
+
+
+            //Draw gamestate UI
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, samplerState: SamplerState.PointClamp);
+            gamestate.DrawUI(_spriteBatch);
             _spriteBatch.End();
 
             // Reset render target

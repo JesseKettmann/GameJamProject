@@ -9,8 +9,8 @@ namespace GameJamProject
 {
     public class Building : Object
     {
-        string Sprite;
-        bool flipped;
+        protected string Sprite;
+        protected bool flipped;
         
         public Building(Vector2 position, string sprite, bool flipped = false) : base(position)
         {

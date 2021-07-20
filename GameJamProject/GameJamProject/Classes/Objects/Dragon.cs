@@ -19,7 +19,7 @@ namespace GameJamProject
 
         // Segments
         List<Vector2> SegmentPositions;
-        int length { get { return _length; } set { _length = value; legPosition = Math.Max(1, value / 3 - 1); } }
+        public int length { get { return _length; } set { _length = value; legPosition = Math.Max(1, value / 3 - 1); } }
         int _length = 6;
         int legPosition = 1;
         float segmentLength = 16 * Game1.pixelScale;
@@ -28,7 +28,7 @@ namespace GameJamProject
         // Gameplay
         public bool started = false;
         float startY;
-        float hitstop = 0;
+        public float hitstop = 0;
 
         public Dragon(Vector2 position) : base(position)
         {

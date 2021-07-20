@@ -9,25 +9,49 @@ namespace GameJamProject
 {
     public class Level : Gamestate
     {
-        public int score;
-        Dragon dragon;
+        public int score {
+            get {
+                return _score;
+            }
+            set {
+                _score = value;
+                scoreText.Bounce();
+                if (dragon.length - 6 < (Math.Log(value / 6 + 50) / Math.Log(1.04f)) - 100)
+                {
+                    dragon.length++;
+                }
+            }
+        }
+        private int _score = 0;
+        public static Dragon dragon;
         float boundary = 0;
         float cursor = 0;
 
+        ScoreText scoreText;
+
         public Level()
         {
-            score = 0;
             dragon = new Dragon(new Vector2(-8 * Game1.pixelScale, Game1.gameInstance.viewSize.Y / 2));
             objects.Add(dragon);
             Camera.Initialise(Game1.gameInstance.viewSize, Game1.gameInstance.viewSize.ToVector2() / 2);
             Generator.Initialise();
+
+            scoreText = new ScoreText(new Vector2(Game1.gameInstance.viewSize.X/2, 100), SpriteManager.GetFont("BigFont"));
+            scoreText.SetText(score.ToString());
+
+            //25, 14, 14 = zwart
+            //
+            scoreText.SetColor(new Color(214, 214, 206));
         }
 
         public override void Update(GameTime gameTime)
         {
-            boundary = Math.Max(dragon.Position.X + 300, boundary);
-            Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + 300) * 0.8f, Game1.gameInstance.viewSize.X / 2);
+            boundary = Math.Max(dragon.Position.X + 360, boundary);
+            Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + 360) * 0.8f, Game1.gameInstance.viewSize.X / 2);
             Camera.Update(gameTime);
+            scoreText.SetText(score.ToString());
+            scoreText.Update(gameTime);
+
             base.Update(gameTime);
 
             // Spawn buildings
@@ -43,13 +67,21 @@ namespace GameJamProject
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            float skyPos = Camera.Location.X - (Camera.Location.X % (300 * Game1.pixelScale));
-            for (int i = -1; i < 2; i ++)
+            float skyPos = Camera.Location.X - ((Camera.Location.X / 2) % (300 * Game1.pixelScale));
+            float groundPos = Camera.Location.X - (Camera.Location.X % (300 * Game1.pixelScale));
+            for (int i = -1; i < 2; i++)
             {
                 SpriteManager.DrawSprite(spriteBatch, "SprSky", new Vector2(skyPos + 300 * Game1.pixelScale * i, 0), Color.White, -10000);
-                SpriteManager.DrawSprite(spriteBatch, "SprGround", new Vector2(skyPos + 300 * Game1.pixelScale * i, 169 * Game1.pixelScale), Color.White, -9000);
+                SpriteManager.DrawSprite(spriteBatch, "SprGround", new Vector2(groundPos + 300 * Game1.pixelScale * i, 169 * Game1.pixelScale), Color.White, -9000);
             }
             base.Draw(spriteBatch);
+        }
+
+        public override void DrawUI(SpriteBatch spriteBatch)
+        {
+            scoreText.Draw(spriteBatch);
+
+            base.DrawUI(spriteBatch);
         }
     }
 }
