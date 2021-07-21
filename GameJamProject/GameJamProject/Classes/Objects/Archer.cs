@@ -11,13 +11,16 @@ namespace GameJamProject
     {
         int state = 0;
         float timeToFire;
+        float coolDown = 0;
         float aim = (float)Math.PI / 4;
         float aimTarget = -(float)Math.PI / 4;
+        float aimExtra;
         string bowSprite = "SprBowKnock";
 
         public Archer(Vector2 position, int depthAdd = 0) : base(position, "SprArcherLowered", 15, -9750 + depthAdd)
         {
             Reset();
+            aimExtra = (float)Game1.random.NextDouble() - 0.5f;
         }
 
         public override void Update(GameTime gameTime)
@@ -25,26 +28,49 @@ namespace GameJamProject
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (!destroyed)
             {
-                if (Camera.Location.X + Camera.Bounds.Width / 2 > Position.X - 150)
+                Level level = Game1.gameInstance.gamestate as Level;
+                Dragon dragon = null;
+                if (level == null)
+                    return;
+                dragon = level.dragon;
+                if (dragon == null)
+                    return;
+                if (Camera.Location.X + Camera.Bounds.Width / 2 > Position.X && dragon.Position.X < Position.X - 200)
                 {
+                    timeToFire -= deltaTime / 1000;
+                    coolDown -= deltaTime / 1000;
                     switch (state)
                     {
                         case 0:
                             aim = (float)Math.PI / 4;
                             Sprite = "SprArcherLowered";
-                            timeToFire -= deltaTime / 1000;
-                            if (timeToFire <= 0)
+                            if (timeToFire <= 0 && coolDown <= 0)
+                            {
                                 state = 1;
+                                timeToFire = 0.2f;
+                            }
                             break;
                         case 1:
-                            if (Game1.gameInstance.gamestate as Level != null)
-                            {
-                                //Dragon dragon = (Game1.gameInstance.gamestate as Level).dr
-                            }
-                            //aimTarget = Extensions.GetAngle(Position + new Vector2(0, -21 * Game1.pixelScale), );
-                            aim += (aimTarget - aim) * 0.001f * deltaTime;
+                        case 2:
+                            aimTarget = Extensions.GetAngle(Position + new Vector2(0, -21 * Game1.pixelScale), dragon.Position + new Vector2(0, -200)) + aimExtra;
+                            aim += (aimTarget - aim) * 0.003f * deltaTime;
                             Sprite = "SprArcherTorso";
-                            bowSprite = "SprBowKnock";
+                            bowSprite = state == 1 ? "SprBowKnock" : "SprBowDrawn";
+                            if (timeToFire <= 0)
+                            {
+                                state ++;
+                                timeToFire = 0.2f;
+                            }
+                            break;
+                        case 3:
+                            Sprite = "SprArcherTorso";
+                            bowSprite = "SprBowLoose";
+                            if (timeToFire <= 0)
+                            {
+                                Reset();
+                                level.objects.Add(new Arrow(Position + new Vector2(0, -21 * Game1.pixelScale), aim));
+                                coolDown = 0.8f + (float)Game1.random.NextDouble();
+                            }
                             break;
                     }
                 } else
@@ -79,8 +105,9 @@ namespace GameJamProject
 
         private void Reset()
         {
+            Sprite = "SprArcherLowered";
             state = 0;
-            timeToFire = 0.6f + (float)Game1.random.NextDouble() * 1f;
+            timeToFire = 0.1f + (float)Game1.random.NextDouble() * 0.5f;
         }
     }
 }

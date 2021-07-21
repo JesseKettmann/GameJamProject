@@ -52,8 +52,6 @@ namespace GameJamProject
             windSound.IsLooped = true;
             windSound.Volume = 0;
             windSound.Play();
-
-            
         }
 
         public override void Update(GameTime gameTime)
@@ -90,11 +88,55 @@ namespace GameJamProject
             if (Input.KeyPressed(Keys.H))
                 length = 50;
 
-            // Death
+            // Get arrows
+            Level level = Game1.gameInstance.gamestate as Level;
+            if (level == null)
+                return;
+            List<Arrow> arrows = new List<Arrow>();
+            foreach (Object obj in level.objects)
+                if (obj as Arrow != null)
+                    arrows.Add(obj as Arrow);
+
+            bool died = false;
             if (alive && started)
             {
+                // Death by walls
                 Rectangle bounds = new Rectangle((int)Camera.Location.X - Camera.Bounds.Width / 2, (int)Camera.Location.Y - Camera.Bounds.Height / 2, Camera.Bounds.Width, Camera.Bounds.Height);
                 if (!bounds.Contains(Position))
+                {
+                    died = true;
+                }
+
+                // Death by arrow
+                Rectangle headBound = new Rectangle((int)(Position.X - 2 * Game1.pixelScale), (int)(Position.Y - 2 * Game1.pixelScale), (int)(4 * Game1.pixelScale), (int)(4 * Game1.pixelScale));
+                for (int o = arrows.Count - 1; o >= 0; o--)
+                {
+                    Rectangle arrowBound = new Rectangle((int)(arrows[o].Position.X - 1), (int)(arrows[o].Position.Y - 1), 2, 2);
+                    if (headBound.Intersects(arrowBound))
+                    {
+                        died = true;
+                        arrows[o].depth = 50;
+                        arrows[o].frozen = true;
+                        break;
+                    }
+                }
+
+                // Block arrows
+                for (int i = 5; i < SegmentPositions.Count; i++)
+                {
+                    Rectangle segmentBound = new Rectangle((int)(SegmentPositions[i].X - 2 * Game1.pixelScale), (int)(SegmentPositions[i].Y - 2 * Game1.pixelScale), (int)(4 * Game1.pixelScale), (int)(4 * Game1.pixelScale));
+                    for (int o = arrows.Count - 1; o >= 0; o--)
+                    {
+                        Rectangle arrowBound = new Rectangle((int)(arrows[o].Position.X - 1), (int)(arrows[o].Position.Y - 1), 2, 2);
+                        if (segmentBound.Intersects(arrowBound))
+                        {
+                            level.objects.Remove(arrows[o]);
+                            arrows.RemoveAt(o);
+                        }
+                    }
+                }
+
+                if (died)
                 {
                     // Die
                     alive = false;
@@ -126,7 +168,7 @@ namespace GameJamProject
         {
             // Fade
             if (!alive)
-                SpriteManager.DrawSprite(spriteBatch, "SprPlaceholder", Camera.Location - Game1.gameInstance.viewSize.ToVector2() / 2, Color.White * deadAlpha, -300, 0, SpriteEffects.None, 100);
+                SpriteManager.DrawSprite(spriteBatch, "SprPlaceholder", Camera.Location - Game1.gameInstance.viewSize.ToVector2() / 2, Game1.gameInstance.Orange * deadAlpha, -300, 0, SpriteEffects.None, 100);
 
             // Head
             SpriteEffects flipped = SpriteEffects.None;

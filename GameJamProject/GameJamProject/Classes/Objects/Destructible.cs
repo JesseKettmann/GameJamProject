@@ -38,7 +38,10 @@ namespace GameJamProject
                 else hitstop -= deltaTime;
             } else
             {
-                Rectangle dragonHitbox = new Rectangle((int)((Game1.gameInstance.gamestate as Level).dragon.Position.X - 8 * Game1.pixelScale), (int)((Game1.gameInstance.gamestate as Level).dragon.Position.Y - 8 * Game1.pixelScale), (int)(16 * Game1.pixelScale), (int)(16 * Game1.pixelScale));
+                Level level = Game1.gameInstance.gamestate as Level;
+                if (level == null)
+                    return;
+                Rectangle dragonHitbox = new Rectangle((int)(level.dragon.Position.X - 8 * Game1.pixelScale), (int)(level.dragon.Position.Y - 8 * Game1.pixelScale), (int)(16 * Game1.pixelScale), (int)(16 * Game1.pixelScale));
                 if (hitbox.Intersects(dragonHitbox))
                 {
                     SoundManager.PlaySoundEffect("hit");

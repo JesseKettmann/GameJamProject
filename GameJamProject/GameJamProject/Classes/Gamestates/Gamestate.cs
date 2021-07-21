@@ -9,7 +9,7 @@ namespace GameJamProject
 {
     public class Gamestate
     {
-        protected List<Object> objects;
+        public List<Object> objects;
 
         public Gamestate()
         {

@@ -27,7 +27,7 @@ namespace GameJamProject
 
         // Colors
         public Color White = new Color(214, 214, 206);
-        public Color Orange = new Color(61, 88, 21);
+        public Color Orange = new Color(161, 88, 21);
 
         public Game1()
         {
@@ -98,7 +98,7 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprBowDrawn", "TexArcher", new Vector2(22, 15), new Rectangle(62, 3, 34, 30));
             SpriteManager.AddSprite("SprBowLoose", "TexArcher", new Vector2(18, 15), new Rectangle(99, 3, 30, 30));
             SpriteManager.AddSprite("SprBowKnock", "TexArcher", new Vector2(32, 15), new Rectangle(132, 3, 41, 30));
-            SpriteManager.AddSprite("SprArrow", "TexArcher", new Vector2(9, 1.5f), new Rectangle(176, 15, 23, 3));
+            SpriteManager.AddSprite("SprArrow", "TexArcher", new Vector2(3.5f, 1.5f), new Rectangle(176, 15, 23, 3));
 
             SpriteManager.AddSprite("SprSky", "TexSky", Vector2.Zero);
 
