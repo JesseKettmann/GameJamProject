@@ -16,7 +16,7 @@ namespace GameJamProject
             set {
                 _score = value;
                 scoreText.Bounce();
-                if (dragon.length - 6 < (Math.Log(value / 6 + 50) / Math.Log(1.04f)) - 100)
+                if (dragon.length - 6 < (Math.Log(value / 30 + 50) / Math.Log(1.04f)) - 100)
                 {
                     dragon.length++;
                 }
@@ -61,9 +61,8 @@ namespace GameJamProject
 
         public override void Update(GameTime gameTime)
         {
-
-            boundary = Math.Max(dragon.Position.X + 360, boundary);
-            Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + 360) * 0.8f, Game1.gameInstance.viewSize.X / 2);
+            boundary = Math.Max(dragon.Position.X + (menu.playing ? 500 : 360), boundary);
+            Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + (menu.playing ? 500 : 360)) * 0.8f, Game1.gameInstance.viewSize.X / 2);
             if (dragon.alive)
                 Camera.Update(gameTime);
             scoreText.SetText(score.ToString());

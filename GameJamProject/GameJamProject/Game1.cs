@@ -69,6 +69,10 @@ namespace GameJamProject
 
             SpriteManager.AddTexture("TexDragonSkeleton", "chinese_dragon_skeleton");
 
+            SpriteManager.AddTexture("TexSamurai", "samurai");
+
+            SpriteManager.AddTexture("TexArcher", "archer");
+
             SpriteManager.AddTexture("TexSky", "skybox");
 
             SpriteManager.AddTexture("TexGround", "ground");
@@ -85,6 +89,16 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprDragonBodySkeleton", "TexDragonSkeleton", new Vector2(16, 5.5f), new Rectangle(16, 0, 16, 11));
             SpriteManager.AddSprite("SprDragonArmSkeleton", "TexDragonSkeleton", new Vector2(16, 5.5f), new Rectangle(32, 0, 16, 11));
             SpriteManager.AddSprite("SprDragonTailSkeleton", "TexDragonSkeleton", new Vector2(16, 5.5f), new Rectangle(0, 0, 16, 11));
+
+            SpriteManager.AddSprite("SprSamurai1", "TexSamurai", new Vector2(16, 32), new Rectangle(0, 0, 32, 32));
+            SpriteManager.AddSprite("SprSamurai2", "TexSamurai", new Vector2(16, 32), new Rectangle(32, 0, 32, 32));
+
+            SpriteManager.AddSprite("SprArcherTorso", "TexArcher", new Vector2(10, 31), new Rectangle(3, 8, 19, 31));
+            SpriteManager.AddSprite("SprArcherLowered", "TexArcher", new Vector2(16, 31), new Rectangle(29, 8, 30, 31));
+            SpriteManager.AddSprite("SprBowDrawn", "TexArcher", new Vector2(22, 15), new Rectangle(62, 3, 34, 30));
+            SpriteManager.AddSprite("SprBowLoose", "TexArcher", new Vector2(18, 15), new Rectangle(99, 3, 30, 30));
+            SpriteManager.AddSprite("SprBowKnock", "TexArcher", new Vector2(32, 15), new Rectangle(132, 3, 41, 30));
+            SpriteManager.AddSprite("SprArrow", "TexArcher", new Vector2(9, 1.5f), new Rectangle(176, 15, 23, 3));
 
             SpriteManager.AddSprite("SprSky", "TexSky", Vector2.Zero);
 

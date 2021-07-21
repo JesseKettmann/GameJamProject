@@ -9,10 +9,10 @@ namespace GameJamProject
 {
     public class Destructible : Building
     {
-        int depth;
+        protected int depth;
         int score;
-        bool destroyed = false;
-        float hitstop = 0;
+        protected bool destroyed = false;
+        protected float hitstop = 0;
         Rectangle hitbox;
         float gravity = 0;
         
@@ -20,8 +20,7 @@ namespace GameJamProject
         {
             this.depth = depth;
             this.score = score;
-            Sprite spriteFull = SpriteManager.sprites[sprite];
-            hitbox = new Rectangle((int)(Position.X - spriteFull.Origin.X * Game1.pixelScale), (int)(Position.Y - spriteFull.Origin.Y * Game1.pixelScale), (int)(spriteFull.Source.Width * Game1.pixelScale), (int)(spriteFull.Source.Height * Game1.pixelScale));
+            SetHitbox();
         }
 
         public override void Update(GameTime gameTime)
@@ -60,7 +59,13 @@ namespace GameJamProject
             Vector2 screenshake = Vector2.Zero;
             if (hitstop >= 0.0001f)
                 screenshake = new Vector2(Game1.random.Next(-6, 6), Game1.random.Next(-6, 6));
-            SpriteManager.DrawSprite(spriteBatch, Sprite, Position + screenshake, Color.White, depth, 0, flipped ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+            SpriteManager.DrawSprite(spriteBatch, Sprite, Position + screenshake, Color.White, depth, 0, flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+        }
+
+        protected void SetHitbox()
+        {
+            Sprite spriteFull = SpriteManager.sprites[Sprite];
+            hitbox = new Rectangle((int)(Position.X - spriteFull.Origin.X * Game1.pixelScale), (int)(Position.Y - spriteFull.Origin.Y * Game1.pixelScale), (int)(spriteFull.Source.Width * Game1.pixelScale), (int)(spriteFull.Source.Height * Game1.pixelScale));
         }
     }
 }
