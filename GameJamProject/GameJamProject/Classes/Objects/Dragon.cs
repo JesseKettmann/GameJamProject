@@ -19,7 +19,7 @@ namespace GameJamProject
 
         // Segments
         List<Vector2> SegmentPositions;
-        public int length { get { return _length; } set { _length = value; legPosition = Math.Max(1, value / 3 - 1); } }
+        public int length { get { return _length; } set { value = Math.Min(value, 200);  _length = value; legPosition = Math.Max(1, value / 3 - 1); } }
         int _length = 6;
         int legPosition = 1;
         float segmentLength = 16 * Game1.pixelScale;
@@ -28,6 +28,11 @@ namespace GameJamProject
         // Gameplay
         public bool started = false;
         public bool canStart = false;
+        public bool alive = true;
+        private float deadTime;
+        private int deadSegments = 0;
+        private float deathSpeed = 0;
+        private float deadAlpha = 0;
 
         float startY;
         public float hitstop = 0;
@@ -41,7 +46,7 @@ namespace GameJamProject
         public override void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (hitstop < 0.0001f)
+            if (hitstop < 0.0001f && alive)
             {
                 // Movement
                 if (started)
@@ -69,18 +74,44 @@ namespace GameJamProject
                 started = true;
             }
 
-            // Test
             if (Input.KeyPressed(Keys.H))
-                length++;
+                length = 50;
+
+            // Death
+            if (alive && started)
+            {
+                Rectangle bounds = new Rectangle((int)Camera.Location.X - Camera.Bounds.Width / 2, (int)Camera.Location.Y - Camera.Bounds.Height / 2, Camera.Bounds.Width, Camera.Bounds.Height);
+                if (!bounds.Contains(Position))
+                {
+                    // Die
+                    alive = false;
+                    deadTime = (float)gameTime.TotalGameTime.TotalSeconds;
+                    deathSpeed = Math.Max(-0.01f * (length - 6) + 0.16f, 0.05f);
+                }
+            }
+            if (!alive)
+            {
+                float deadTimeTotal = (float)gameTime.TotalGameTime.TotalSeconds - deadTime;
+                deadAlpha = Math.Min(deadTimeTotal, 1);
+                int deadSegmentsPrev = deadSegments;
+                deadSegments = Math.Min((int)(deadTimeTotal / deathSpeed), length);
+                if (deadSegments > deadSegmentsPrev)
+                    SoundManager.PlaySoundEffect("hit", (float)Math.Pow(0.95f, deadSegments));
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+            // Fade
+            if (!alive)
+                SpriteManager.DrawSprite(spriteBatch, "SprPlaceholder", Camera.Location - Game1.gameInstance.viewSize.ToVector2() / 2, Color.White * deadAlpha, -300, 0, SpriteEffects.None, 100);
+
             // Head
             SpriteEffects flipped = SpriteEffects.None;
             if (Math.Abs(Extensions.AngleDifference(headAngle, (float)Math.PI)) < (float)Math.PI / 2)
                 flipped = SpriteEffects.FlipVertically;
-            SpriteManager.DrawSprite(spriteBatch, "SprDragonHead", Position, Color.White, 0, headAngle, flipped);
+            string sprite = alive ? "SprDragonHead" : "SprDragonHeadSkeleton";
+            SpriteManager.DrawSprite(spriteBatch, sprite, Position, Color.White, 0, headAngle, flipped);
 
             // Body
             Vector2 thisPoint = Position;
@@ -100,11 +131,13 @@ namespace GameJamProject
             for (int i = 0; i < length; i ++)
             {
                 // Set sprite
-                string sprite = "SprDragonBody";
+                 sprite = "SprDragonBody";
                 if (i == legPosition || i == 2 * legPosition + 1)
                     sprite = "SprDragonArm";
                 if (i == length - 1)
                     sprite = "SprDragonTail";
+                if (!alive && deadSegments > i)
+                    sprite += "Skeleton";
 
                 // Find next point
                 try

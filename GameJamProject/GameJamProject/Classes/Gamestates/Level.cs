@@ -48,7 +48,8 @@ namespace GameJamProject
 
             boundary = Math.Max(dragon.Position.X + 360, boundary);
             Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + 360) * 0.8f, Game1.gameInstance.viewSize.X / 2);
-            Camera.Update(gameTime);
+            if (dragon.alive)
+                Camera.Update(gameTime);
             scoreText.SetText(score.ToString());
             scoreText.Update(gameTime);
 

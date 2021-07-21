@@ -65,6 +65,8 @@ namespace GameJamProject
             // Textures
             SpriteManager.AddTexture("TexDragon", "chinese_dragon");
 
+            SpriteManager.AddTexture("TexDragonSkeleton", "chinese_dragon_skeleton");
+
             SpriteManager.AddTexture("TexSky", "skybox");
 
             SpriteManager.AddTexture("TexGround", "ground");
@@ -76,6 +78,11 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprDragonBody", "TexDragon", new Vector2(16, 5.5f), new Rectangle(16, 0, 16, 11));
             SpriteManager.AddSprite("SprDragonArm", "TexDragon", new Vector2(16, 5.5f), new Rectangle(32, 0, 16, 11));
             SpriteManager.AddSprite("SprDragonTail", "TexDragon", new Vector2(16, 5.5f), new Rectangle(0, 0, 16, 11));
+
+            SpriteManager.AddSprite("SprDragonHeadSkeleton", "TexDragonSkeleton", new Vector2(8, 5.5f), new Rectangle(48, 0, 16, 11));
+            SpriteManager.AddSprite("SprDragonBodySkeleton", "TexDragonSkeleton", new Vector2(16, 5.5f), new Rectangle(16, 0, 16, 11));
+            SpriteManager.AddSprite("SprDragonArmSkeleton", "TexDragonSkeleton", new Vector2(16, 5.5f), new Rectangle(32, 0, 16, 11));
+            SpriteManager.AddSprite("SprDragonTailSkeleton", "TexDragonSkeleton", new Vector2(16, 5.5f), new Rectangle(0, 0, 16, 11));
 
             SpriteManager.AddSprite("SprSky", "TexSky", Vector2.Zero);
 
@@ -95,7 +102,7 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprStatue", "TexBuildings", new Vector2(11, 41), new Rectangle(213, 23, 22, 41));
             SpriteManager.AddSprite("SprGate", "TexBuildings", new Vector2(0, 48), new Rectangle(240, 16, 48, 48));
 
-            SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(8, 22), new Rectangle(288, 42, 16, 22));
+            SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(0, 0), new Rectangle(288, 42, 16, 22));
 
             SpriteManager.AddFont("BigFont", "BigFont");
             SpriteManager.AddFont("MediumFont", "MediumFont");

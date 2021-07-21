@@ -62,13 +62,15 @@ namespace GameJamProject
 
 
         // Default drawing method
-        public static void DrawSprite(SpriteBatch spriteBatch, string _sprite, Vector2 position, Color color, int depth = 0, float rotation = 0, SpriteEffects spriteEffect = SpriteEffects.None)
+        public static void DrawSprite(SpriteBatch spriteBatch, string _sprite, Vector2 position, Color color, int depth = 0, float rotation = 0, SpriteEffects spriteEffect = SpriteEffects.None, float scale = 0)
         {
             depthMin = Math.Min(depthMin, depth);
             depthMax = Math.Max(depthMax, depth);
             float _depth = (depth - (float)depthMin) / (depthMax - depthMin);
             Sprite sprite = sprites[_sprite];
-            spriteBatch.Draw(sprite.Texture, position, sprite.Source, color, -rotation, sprite.Origin, Game1.pixelScale, spriteEffect, _depth);
+            if (scale == 0)
+                scale = Game1.pixelScale;
+            spriteBatch.Draw(sprite.Texture, position, sprite.Source, color, -rotation, sprite.Origin, scale, spriteEffect, _depth);
         }
     }
 }

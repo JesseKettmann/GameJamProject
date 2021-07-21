@@ -23,12 +23,12 @@ namespace GameJamProject
             soundeffects.TryAdd(name, effect);
         }
 
-        public static void PlaySoundEffect(string name)
+        public static void PlaySoundEffect(string name, float volume = 1, float pitch = 0, float pan = 0)
         {
             SoundEffect effect;
             if(soundeffects.TryGetValue(name, out effect))
             {
-                effect.Play();
+                effect.Play(volume, 0, 0);
             }
         }
     }
