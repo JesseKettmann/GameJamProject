@@ -50,6 +50,8 @@ namespace GameJamProject
             viewScale = 1f / ((float)viewSize.Y / portSize.Y);
 
             base.Initialize();
+
+            HighscoreManager.RetrieveHighscore();
         }
 
         protected override void LoadContent()
