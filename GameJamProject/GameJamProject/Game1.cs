@@ -56,6 +56,7 @@ namespace GameJamProject
             _spriteBatch = new SpriteBatch(graphicsDevice);
             renderTarget = new RenderTarget2D(graphicsDevice, viewSize.X, viewSize.Y, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             SpriteManager.Initialise();
+            SoundManager.Initialise();
 
             // Textures
             SpriteManager.AddTexture("TexDragon", "chinese_dragon");
@@ -93,6 +94,9 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(8, 22), new Rectangle(288, 42, 16, 22));
 
             SpriteManager.AddFont("BigFont", "BigFont");
+
+            SoundManager.LoadSoundEffect("hit", "Audio/hit");
+
 
             gamestate = new Level();
         }

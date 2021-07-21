@@ -42,6 +42,8 @@ namespace GameJamProject
                 Rectangle dragonHitbox = new Rectangle((int)(Level.dragon.Position.X - 8 * Game1.pixelScale), (int)(Level.dragon.Position.Y - 8 * Game1.pixelScale), (int)(16 * Game1.pixelScale), (int)(16 * Game1.pixelScale));
                 if (hitbox.Intersects(dragonHitbox))
                 {
+                    SoundManager.PlaySoundEffect("hit");
+                    Camera.Shake(10, 0.1f, 1);
                     Level.dragon.hitstop = 115f;
                     if (Game1.gameInstance.gamestate as Level != null)
                         (Game1.gameInstance.gamestate as Level).score += score;
