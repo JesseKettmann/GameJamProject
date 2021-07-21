@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -37,10 +38,18 @@ namespace GameJamProject
         float startY;
         public float hitstop = 0;
 
+        SoundEffectInstance windSound;
+
+
         public Dragon(Vector2 position) : base(position)
         {
             SegmentPositions = new List<Vector2>();
             startY = position.Y;
+
+            windSound = SoundManager.PlaySoundEffectInstance("wind");
+            windSound.IsLooped = true;
+            windSound.Volume = 0;
+            windSound.Play();
         }
 
         public override void Update(GameTime gameTime)
@@ -57,11 +66,11 @@ namespace GameJamProject
                 {
                     direction = Math.Sign(Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10) + (Position.Y - startY) / 200);
                 }
+                
                 headAngle += direction * turnSpeed * deltaTime;
                 if (headAngle < 0)
                     headAngle += (float)Math.PI * 2;
                 Position += new Vector2((float)Math.Cos(headAngle) * moveSpeed, -(float)Math.Sin(headAngle) * moveSpeed) * deltaTime;
-
                 // Segments
                 SegmentPositions.Insert(0, Position);
                 if (SegmentPositions.Count > segmentListSize)
@@ -97,6 +106,12 @@ namespace GameJamProject
                 deadSegments = Math.Min((int)(deadTimeTotal / deathSpeed), length);
                 if (deadSegments > deadSegmentsPrev)
                     SoundManager.PlaySoundEffect("hit", (float)Math.Pow(0.95f, deadSegments));
+                windSound.Volume = MathHelper.Lerp(windSound.Volume, 0, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
+            } else {
+                if (Input.KeyDown(Keys.Space))
+                    windSound.Volume = MathHelper.Lerp(windSound.Volume, 1f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
+                else
+                    windSound.Volume = MathHelper.Lerp(windSound.Volume, 0.3f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
             }
         }
 

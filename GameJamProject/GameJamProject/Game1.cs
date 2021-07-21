@@ -108,6 +108,7 @@ namespace GameJamProject
             SpriteManager.AddFont("MediumFont", "MediumFont");
 
             SoundManager.LoadSoundEffect("hit", "Audio/hit");
+            SoundManager.LoadSoundEffect("wind", "Audio/Wind");
 
 
             gamestate = new Level();

@@ -44,7 +44,7 @@ namespace GameJamProject
                 {
                     SoundManager.PlaySoundEffect("hit");
                     Camera.Shake(5, 0.1f, 1);
-                    Level.dragon.hitstop = 115f;
+                    Level.dragon.hitstop = 50f;
                     if (Game1.gameInstance.gamestate as Level != null)
                         (Game1.gameInstance.gamestate as Level).score += score;
                     hitstop = 115f;
