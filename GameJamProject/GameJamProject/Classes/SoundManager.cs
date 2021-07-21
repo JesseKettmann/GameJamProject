@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,13 +8,16 @@ namespace GameJamProject
 {
     static class SoundManager
     {
-
-
         static Dictionary<string, SoundEffect> soundeffects;
+        static Song song;
         
         public static void Initialise()
         {
             soundeffects = new Dictionary<string, SoundEffect>();
+            song = Game1.gameInstance.Content.Load<Song>("Audio/road_to_the_stronghold");
+            MediaPlayer.Play(song);
+            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.IsRepeating = true;
         }
 
 
@@ -23,12 +27,14 @@ namespace GameJamProject
             soundeffects.TryAdd(name, effect);
         }
 
-        public static void PlaySoundEffect(string name, float volume = 1, float pitch = 0, float pan = 0)
+        public static void PlaySoundEffect(string name, float volume = 1, float pitch = 4, float pan = 0)
         {
+            if (pitch > 3)
+                pitch = 0.55f + (float)Game1.random.NextDouble() * 0.1f;
             SoundEffect effect;
             if(soundeffects.TryGetValue(name, out effect))
             {
-                effect.Play(volume, 0, 0);
+                effect.Play(volume, pitch, pan);
             }
         }
 

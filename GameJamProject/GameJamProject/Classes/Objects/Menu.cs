@@ -89,19 +89,19 @@ namespace GameJamProject
                 if (Input.KeyPressed(Keys.Down) || Input.KeyPressed(Keys.S))
                 {
                     selectedIndex++;
-
                     UpdateSelected();
-
-
+                    SoundManager.PlaySoundEffect("select", 0.7f);
                 }
                 else if (Input.KeyPressed(Keys.Up) || Input.KeyPressed(Keys.W))
                 {
                     selectedIndex--;
                     UpdateSelected();
+                    SoundManager.PlaySoundEffect("select", 0.7f);
                 }
 
                 if (Input.KeyPressed(Keys.Enter) || Input.KeyPressed(Keys.Space))
                 {
+                    SoundManager.PlaySoundEffect("start");
                     if (selectedIndex == 1)
                     {
                         Game1.gameInstance.Exit();

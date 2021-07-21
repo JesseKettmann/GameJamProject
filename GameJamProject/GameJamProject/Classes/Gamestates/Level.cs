@@ -16,12 +16,14 @@ namespace GameJamProject
             set {
                 _score = value;
                 scoreText.Bounce();
-                if (dragon.length - 6 < (Math.Log(value / 30 + 50) / Math.Log(1.04f)) - 100)
+                // if (dragon.length - 6 < (Math.Log(value / 30 + 50) / Math.Log(1.04f)) - 100)
+                if (dragon.length - 3 < value / 25)
                 {
                     dragon.length++;
                 }
             }
         }
+        public float difficulty = 0.5f;
         private int _score = 0;
         public Dragon dragon;
         float boundary = 0;
@@ -44,7 +46,7 @@ namespace GameJamProject
             Camera.Initialise(Game1.gameInstance.viewSize, Game1.gameInstance.viewSize.ToVector2() / 2);
             Generator.Initialise();
 
-            scoreText = new ScoreText(new Vector2(Game1.gameInstance.viewSize.X/2, 100), SpriteManager.GetFont("BigFont"));
+            scoreText = new ScoreText(new Vector2(Game1.gameInstance.viewSize.X/2, 124), SpriteManager.GetFont("ScoreFont"));
             scoreText.SetText(score.ToString());
             scoreText.SetColor(Game1.gameInstance.White);
 
@@ -54,7 +56,7 @@ namespace GameJamProject
 
             menu = new Menu(Game1.gameInstance.viewSize.ToVector2()/2f, SpriteManager.GetFont("MediumFont"));
             deathText = new Text(Game1.gameInstance.viewSize.ToVector2() / 2f, SpriteManager.GetFont("MediumFont"));
-            deathText.SetText("Press [Space] to restart");
+            deathText.SetText("Press [Space] to continue");
             deathText.SetColor(Game1.gameInstance.White);
 
             highScore = new Text(new Vector2(Game1.gameInstance.viewSize.X/2f, 170), SpriteManager.GetFont("MediumFont"));
@@ -95,7 +97,7 @@ namespace GameJamProject
                 {
                     if (Camera.Location.X + Game1.gameInstance.viewSize.X > cursor)
                     {
-                        cursor = Generator.SpawnOutpost(cursor, objects);
+                        cursor = Generator.SpawnOutpost(cursor, objects, difficulty);
                     }
                 }
 
@@ -111,6 +113,7 @@ namespace GameJamProject
                 {
                     if (Input.KeyPressed(Keys.Space))
                     {
+                        SoundManager.PlaySoundEffect("start");
                         Game1.gameInstance.gamestate = new Level();
                     }
 

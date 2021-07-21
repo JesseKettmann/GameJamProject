@@ -34,6 +34,7 @@ namespace GameJamProject
         private int deadSegments = 0;
         private float deathSpeed = 0;
         private float deadAlpha = 0;
+        private float startX = 0;
 
         private double startTime = -1f;
 
@@ -85,13 +86,11 @@ namespace GameJamProject
             }
             else hitstop -= deltaTime;
 
-            if (canStart && Input.KeyPressed(Keys.Space))
+            if (canStart && Input.KeyPressed(Keys.Space) && started == false)
             {
                 started = true;
+                startX = Position.X;
             }
-
-            if (Input.KeyPressed(Keys.H))
-                length = 50;
 
             // Get arrows
             Level level = Game1.gameInstance.gamestate as Level;
@@ -101,6 +100,9 @@ namespace GameJamProject
             foreach (Object obj in level.objects)
                 if (obj as Arrow != null)
                     arrows.Add(obj as Arrow);
+
+            // Difficulty
+            level.difficulty = started ? MathHelper.Clamp(((Position.X - startX) / 27000) + 0.4f, 0.5f, 2f) : 0.5f;
 
             bool died = false;
             if (alive && started)
@@ -117,11 +119,22 @@ namespace GameJamProject
                 for (int o = arrows.Count - 1; o >= 0; o--)
                 {
                     Rectangle arrowBound = new Rectangle((int)(arrows[o].Position.X - 1), (int)(arrows[o].Position.Y - 1), 2, 2);
-                    if (headBound.Intersects(arrowBound))
+                    if (headBound.Intersects(arrowBound) && !arrows[o].frozen)
                     {
                         died = true;
                         arrows[o].depth = 50;
                         arrows[o].frozen = true;
+                        break;
+                    }
+                }
+
+                // Death by self
+                for (int i = 5; i < SegmentPositions.Count; i++)
+                {
+                    Rectangle segmentBound = new Rectangle((int)(SegmentPositions[i].X - 2 * Game1.pixelScale), (int)(SegmentPositions[i].Y - 2 * Game1.pixelScale), (int)(4 * Game1.pixelScale), (int)(4 * Game1.pixelScale));
+                    if (headBound.Intersects(segmentBound))
+                    {
+                        died = true;
                         break;
                     }
                 }
@@ -133,10 +146,11 @@ namespace GameJamProject
                     for (int o = arrows.Count - 1; o >= 0; o--)
                     {
                         Rectangle arrowBound = new Rectangle((int)(arrows[o].Position.X - 1), (int)(arrows[o].Position.Y - 1), 2, 2);
-                        if (segmentBound.Intersects(arrowBound))
+                        if (segmentBound.Intersects(arrowBound) && !arrows[o].frozen)
                         {
                             level.objects.Remove(arrows[o]);
                             arrows.RemoveAt(o);
+                            SoundManager.PlaySoundEffect("block");
                         }
                     }
                 }
@@ -144,9 +158,10 @@ namespace GameJamProject
                 if (died)
                 {
                     // Die
+                    SoundManager.PlaySoundEffect("death", 0.6f);
                     alive = false;
                     deadTime = (float)gameTime.TotalGameTime.TotalSeconds;
-                    deathSpeed = Math.Max(-0.01f * (length - 6) + 0.16f, 0.05f);
+                    deathSpeed = Math.Max(-0.01f * (length - 6) + 0.14f, 0.07f);
                     Camera.Shake(8, 0.2f, 1);
                 }
             }
@@ -157,7 +172,7 @@ namespace GameJamProject
                 int deadSegmentsPrev = deadSegments;
                 deadSegments = Math.Min((int)(deadTimeTotal / deathSpeed), length);
                 if (deadSegments > deadSegmentsPrev)
-                    SoundManager.PlaySoundEffect("hit", (float)Math.Pow(0.95f, deadSegments));
+                    SoundManager.PlaySoundEffect("bone", (float)Math.Pow(0.95f, deadSegments) * 0.7f);
                 windSound.Volume = MathHelper.Lerp(windSound.Volume, 0, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
             
             

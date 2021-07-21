@@ -15,7 +15,8 @@ namespace GameJamProject
         protected float hitstop = 0;
         Rectangle hitbox;
         float gravity = 0;
-        
+        protected string sound = "destroy";
+
         public Destructible(Vector2 position, string sprite, int score, int depth = 0, bool flipped = false) : base(position, sprite, flipped)
         {
             this.depth = depth;
@@ -42,14 +43,13 @@ namespace GameJamProject
                 if (level == null)
                     return;
                 Rectangle dragonHitbox = new Rectangle((int)(level.dragon.Position.X - 8 * Game1.pixelScale), (int)(level.dragon.Position.Y - 8 * Game1.pixelScale), (int)(16 * Game1.pixelScale), (int)(16 * Game1.pixelScale));
-                if (hitbox.Intersects(dragonHitbox))
+                if (hitbox.Intersects(dragonHitbox) && level.dragon.alive)
                 {
-                    SoundManager.PlaySoundEffect("hit", 0.4f);
+                    SoundManager.PlaySoundEffect(sound, 0.4f);
                     Camera.Shake(5, 0.1f, 1);
-                    (Game1.gameInstance.gamestate as Level).dragon.hitstop = 50f;
-                    if (Game1.gameInstance.gamestate as Level != null)
-                        (Game1.gameInstance.gamestate as Level).score += score;
-                    hitstop = 115f;
+                    level.dragon.hitstop = 80f;
+                    level.score += score;
+                    hitstop = 80f;
                     destroyed = true;
                     gravity = -10;
                 }

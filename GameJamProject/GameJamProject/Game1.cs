@@ -121,9 +121,17 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(0, 0), new Rectangle(288, 42, 16, 22));
 
             SpriteManager.AddFont("BigFont", "BigFont");
+            SpriteManager.AddFont("ScoreFont", "ScoreFont");
             SpriteManager.AddFont("MediumFont", "MediumFont");
 
-            SoundManager.LoadSoundEffect("hit", "Audio/hit");
+            SoundManager.LoadSoundEffect("block", "Audio/block");
+            SoundManager.LoadSoundEffect("bone", "Audio/bone");
+            SoundManager.LoadSoundEffect("death", "Audio/death2");
+            SoundManager.LoadSoundEffect("destroy", "Audio/destroy");
+            SoundManager.LoadSoundEffect("kill", "Audio/kill");
+            SoundManager.LoadSoundEffect("select", "Audio/select");
+            SoundManager.LoadSoundEffect("shoot", "Audio/shoot4");
+            SoundManager.LoadSoundEffect("start", "Audio/start3");
             SoundManager.LoadSoundEffect("wind", "Audio/Wind");
 
 

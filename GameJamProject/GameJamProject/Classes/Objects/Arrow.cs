@@ -23,6 +23,8 @@ namespace GameJamProject
         {
             if (!frozen)
                 Position -= new Vector2((float)Math.Cos(direction) * speed, -(float)Math.Sin(direction) * speed) * (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (Position.Y > 171 * Game1.pixelScale)
+                frozen = true;
             if (Position.X < Camera.Location.X - 2000)
                 Despawn();
         }

@@ -13,10 +13,10 @@ namespace GameJamProject
         float phaseExtra;
         float walkSpeed = 0.1f;
 
-
-        public Samurai(Vector2 position, int depthAdd = 0) : base(position, "SprSamurai1", 15, -9700 + depthAdd)
+        public Samurai(Vector2 position, int depthAdd = 0) : base(position, "SprSamurai1", 12, -9700 + depthAdd)
         {
             phaseExtra = (float)Game1.random.NextDouble();
+            sound = "kill";
         }
 
         public override void Update(GameTime gameTime)

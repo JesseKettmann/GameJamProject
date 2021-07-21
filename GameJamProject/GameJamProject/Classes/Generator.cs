@@ -14,6 +14,7 @@ namespace GameJamProject
         static float randomNumber;
         static float cursor;
         static float cursorHeight = 0;
+        static float difficulty;
         static List<Object> objects;
 
         public static void Initialise()
@@ -22,12 +23,13 @@ namespace GameJamProject
             ground = 172 * Game1.pixelScale;
         }
         
-        public static float SpawnOutpost(float _cursor, List<Object> _objects)
+        public static float SpawnOutpost(float _cursor, List<Object> _objects, float _difficulty)
         {
             // Variables
             cursor = _cursor;
             cursorHeight = 0;
             objects = _objects;
+            difficulty = _difficulty;
 
             // Decide on outposttype
             randomNumber = (float)random.NextDouble();
@@ -47,9 +49,10 @@ namespace GameJamProject
                 int carts = random.Next(0, 3); // Carts
                 for (int i = 0; i < carts; i ++)
                     structures.Add(1);
-                if (random.NextDouble() < 0.5f) // Tower
+                int towers = random.Next(0, (int)(difficulty * 3)); // Towers
+                for (int i = 0; i < towers; i++)
                     structures.Add(2);
-                if (random.NextDouble() < 0.5f) // Temple
+                if (random.NextDouble() < 0.5f * (0.5 + 0.5 * difficulty)) // Temple
                     structures.Add(3);
                 Shuffle(structures);
                 SpawnList(structures);
@@ -118,7 +121,7 @@ namespace GameJamProject
             objects.Add(new Building(position, sprite));
             if (random.NextDouble() < 0.5f)
                 SpawnLampion(position + new Vector2(16.5f * Game1.pixelScale, -28 * Game1.pixelScale));
-            if (random.NextDouble() < 0.5f)
+            if (random.NextDouble() < 0.5f * difficulty)
                 objects.Add(new Archer(position + new Vector2(17 * Game1.pixelScale, 0), 0));
         }
 
@@ -218,6 +221,8 @@ namespace GameJamProject
             float groundPrev = ground;
             ground -= 50 * Game1.pixelScale;
             SpawnTempleSide();
+            if (random.NextDouble() < 2 * difficulty)
+                objects.Add(new Archer(new Vector2(cursor + 8 * Game1.pixelScale, ground), 0));
             SpawnTempleMid();
             SpawnTempleSide(true);
             ground = groundPrev;

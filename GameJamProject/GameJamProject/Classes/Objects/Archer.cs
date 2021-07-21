@@ -17,10 +17,11 @@ namespace GameJamProject
         float aimExtra;
         string bowSprite = "SprBowKnock";
 
-        public Archer(Vector2 position, int depthAdd = 0) : base(position, "SprArcherLowered", 15, -9750 + depthAdd)
+        public Archer(Vector2 position, int depthAdd = 0) : base(position, "SprArcherLowered", 16, -9750 + depthAdd)
         {
             Reset();
-            aimExtra = (float)Game1.random.NextDouble() - 0.5f;
+            aimExtra = (float)Game1.random.NextDouble() * 0.8f - 0.4f;
+            sound = "kill";
         }
 
         public override void Update(GameTime gameTime)
@@ -52,7 +53,7 @@ namespace GameJamProject
                             break;
                         case 1:
                         case 2:
-                            aimTarget = Extensions.GetAngle(Position + new Vector2(0, -21 * Game1.pixelScale), dragon.Position + new Vector2(0, -200)) + aimExtra;
+                            aimTarget = Extensions.GetAngle(Position + new Vector2(0, -21 * Game1.pixelScale), dragon.Position + new Vector2(0, -110)) + aimExtra;
                             aimTarget = MathHelper.Clamp(aimTarget, -(float)Math.PI * 0.65f, (float)Math.PI * 0.65f);
                             aim += (aimTarget - aim) * 0.0035f * deltaTime;
                             Sprite = "SprArcherTorso";
@@ -61,6 +62,12 @@ namespace GameJamProject
                             {
                                 state ++;
                                 timeToFire = 0.2f;
+                                if (state == 3)
+                                {
+                                    level.objects.Add(new Arrow(Position + new Vector2(0, -21 * Game1.pixelScale), aim));
+                                    coolDown = 0.8f + (float)Game1.random.NextDouble();
+                                    SoundManager.PlaySoundEffect("shoot");
+                                }
                             }
                             if (dragon.Position.X > Position.X - 200)
                             {
@@ -73,8 +80,6 @@ namespace GameJamProject
                             if (timeToFire <= 0)
                             {
                                 Reset();
-                                level.objects.Add(new Arrow(Position + new Vector2(0, -21 * Game1.pixelScale), aim));
-                                coolDown = 0.8f + (float)Game1.random.NextDouble();
                             }
                             break;
                     }
