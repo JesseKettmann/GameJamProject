@@ -45,36 +45,33 @@ namespace GameJamProject
             Location.X = MathHelper.Lerp(Location.X, targetX, cameraSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds);
 
             Location = Vector2.Round(Location);
-            
-            
-            if(shakeTime > 0.0f)
+
+        }
+        public static void UpdateShake(GameTime gameTime)
+        {
+
+            if (shakeTime > 0.0f)
             {
                 float damp = 1.0f;
 
                 shakeTime -= (float)gameTime.ElapsedGameTime.TotalSeconds;
                 float percentage = (shakeDuration - shakeTime) / shakeDuration;
-                if(percentage <= 1.0f)
+                if (percentage <= 1.0f)
                 {
-                    damp = 1.0f - percentage;   
+                    damp = 1.0f - percentage;
                 }
 
                 Vector2 offset = RandomInUnitCircle();
                 offset *= shakeMagnitude * damp;
                 shakeOffset = offset;
 
-            } else
+            }
+            else
             {
                 shakeTime = 0;
                 shakeOffset = Vector2.Zero;
             }
-
-
-            Game1.cameraMatrix = TransformMatrix;
-
-
-
         }
-
         /*
          * https://github.com/JordanKisiel/UnityCameraShake/blob/master/CameraShake.cs
          */

@@ -30,6 +30,7 @@ namespace GameJamProject
         bool newHighscore = false;
 
         ScoreText scoreText;
+        ScoreText subScoreText;
         Menu menu;
 
         Text deathText;
@@ -47,6 +48,10 @@ namespace GameJamProject
             scoreText.SetText(score.ToString());
             scoreText.SetColor(Game1.gameInstance.White);
 
+            subScoreText = new ScoreText(new Vector2(Game1.gameInstance.viewSize.X / 2, 60), SpriteManager.GetFont("MediumFont"));
+            subScoreText.SetText("Score:");
+            subScoreText.SetColor(Game1.gameInstance.White);
+
             menu = new Menu(Game1.gameInstance.viewSize.ToVector2()/2f, SpriteManager.GetFont("MediumFont"));
             deathText = new Text(Game1.gameInstance.viewSize.ToVector2() / 2f, SpriteManager.GetFont("MediumFont"));
             deathText.SetText("Press [Space] to restart");
@@ -63,6 +68,7 @@ namespace GameJamProject
         {
             boundary = Math.Max(dragon.Position.X + (menu.playing ? 500 : 360), boundary);
             Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + (menu.playing ? 500 : 360)) * 0.8f, Game1.gameInstance.viewSize.X / 2);
+            Camera.UpdateShake(gameTime);
             if (dragon.alive)
                 Camera.Update(gameTime);
             scoreText.SetText(score.ToString());
@@ -135,6 +141,7 @@ namespace GameJamProject
             }
             else
             {
+                subScoreText.Draw(spriteBatch);
                 scoreText.Draw(spriteBatch);
 
             }
