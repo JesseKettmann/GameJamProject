@@ -27,6 +27,8 @@ namespace GameJamProject
 
         // Gameplay
         public bool started = false;
+        public bool canStart = false;
+
         float startY;
         public float hitstop = 0;
 
@@ -62,9 +64,10 @@ namespace GameJamProject
             }
             else hitstop -= deltaTime;
 
-            // Start
-            if (Input.KeyDown(Keys.Space))
+            if (canStart && Input.KeyPressed(Keys.Space))
+            {
                 started = true;
+            }
 
             // Test
             if (Input.KeyPressed(Keys.H))

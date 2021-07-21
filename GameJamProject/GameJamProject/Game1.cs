@@ -94,6 +94,7 @@ namespace GameJamProject
             SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(8, 22), new Rectangle(288, 42, 16, 22));
 
             SpriteManager.AddFont("BigFont", "BigFont");
+            SpriteManager.AddFont("MediumFont", "MediumFont");
 
             SoundManager.LoadSoundEffect("hit", "Audio/hit");
 

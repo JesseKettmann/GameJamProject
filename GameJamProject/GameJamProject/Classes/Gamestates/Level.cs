@@ -28,7 +28,7 @@ namespace GameJamProject
         float cursor = 0;
 
         ScoreText scoreText;
-
+        Menu menu;
         public Level()
         {
             dragon = new Dragon(new Vector2(-8 * Game1.pixelScale, Game1.gameInstance.viewSize.Y / 2));
@@ -42,10 +42,13 @@ namespace GameJamProject
             //25, 14, 14 = zwart
             //
             scoreText.SetColor(new Color(214, 214, 206));
+
+            menu = new Menu(Game1.gameInstance.viewSize.ToVector2()/2f, SpriteManager.GetFont("MediumFont"));
         }
 
         public override void Update(GameTime gameTime)
         {
+
             boundary = Math.Max(dragon.Position.X + 360, boundary);
             Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + 360) * 0.8f, Game1.gameInstance.viewSize.X / 2);
             Camera.Update(gameTime);
@@ -55,18 +58,27 @@ namespace GameJamProject
             base.Update(gameTime);
 
             // Spawn buildings
-            if (dragon.started)
+            if (menu.playing)
             {
-                if (Camera.Location.X + Game1.gameInstance.viewSize.X > cursor)
+                dragon.canStart = true;
+                if (dragon.started)
                 {
-                    cursor = Generator.SpawnOutpost(cursor, objects);
+                    if (Camera.Location.X + Game1.gameInstance.viewSize.X > cursor)
+                    {
+                        cursor = Generator.SpawnOutpost(cursor, objects);
+                    }
                 }
+
+            } else
+            {
+                menu.Update(gameTime);
             }
             cursor = Math.Max(Camera.Location.X + Game1.gameInstance.viewSize.X / 2 + 100, cursor);
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
+
             float skyPos = Camera.Location.X - ((Camera.Location.X / 2) % (300 * Game1.pixelScale));
             float groundPos = Camera.Location.X - (Camera.Location.X % (300 * Game1.pixelScale));
             for (int i = -1; i < 2; i++)
@@ -79,8 +91,15 @@ namespace GameJamProject
 
         public override void DrawUI(SpriteBatch spriteBatch)
         {
-            scoreText.Draw(spriteBatch);
+            if (!menu.playing)
+            {
+                menu.Draw(spriteBatch);
+            }
+            else
+            {
+                scoreText.Draw(spriteBatch);
 
+            }
             base.DrawUI(spriteBatch);
         }
     }

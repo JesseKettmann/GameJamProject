@@ -74,3 +74,10 @@
 /processorParam:Quality=Best
 /build:Audio/hit.mp3
 
+#begin Fonts/MediumFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/MediumFont.spritefont
+

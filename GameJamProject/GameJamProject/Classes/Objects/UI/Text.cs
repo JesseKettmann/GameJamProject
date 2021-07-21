@@ -11,7 +11,7 @@ namespace GameJamProject
 
         private string text = "";
         private SpriteFont font;
-        private Color color;
+        private Color color = Color.White;
 
         public Text(Vector2 position, SpriteFont font) : base(position)
         {
@@ -31,7 +31,7 @@ namespace GameJamProject
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 size = font.MeasureString(text);
-            spriteBatch.DrawString(font, text, Position-size/2f, color);
+            spriteBatch.DrawString(font, text, (Position-size/2f).ToPoint().ToVector2(), color);
             base.Draw(spriteBatch);
         }
 
