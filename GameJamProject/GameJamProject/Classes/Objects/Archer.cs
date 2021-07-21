@@ -11,6 +11,9 @@ namespace GameJamProject
     {
         int state = 0;
         float timeToFire;
+        float aim = (float)Math.PI / 4;
+        float aimTarget = -(float)Math.PI / 4;
+        string bowSprite = "SprBowKnock";
 
         public Archer(Vector2 position, int depthAdd = 0) : base(position, "SprArcherLowered", 15, -9750 + depthAdd)
         {
@@ -27,13 +30,21 @@ namespace GameJamProject
                     switch (state)
                     {
                         case 0:
+                            aim = (float)Math.PI / 4;
                             Sprite = "SprArcherLowered";
                             timeToFire -= deltaTime / 1000;
                             if (timeToFire <= 0)
                                 state = 1;
                             break;
                         case 1:
+                            if (Game1.gameInstance.gamestate as Level != null)
+                            {
+                                //Dragon dragon = (Game1.gameInstance.gamestate as Level).dr
+                            }
+                            //aimTarget = Extensions.GetAngle(Position + new Vector2(0, -21 * Game1.pixelScale), );
+                            aim += (aimTarget - aim) * 0.001f * deltaTime;
                             Sprite = "SprArcherTorso";
+                            bowSprite = "SprBowKnock";
                             break;
                     }
                 } else
@@ -59,7 +70,9 @@ namespace GameJamProject
             switch (state)
             {
                 case 1:
-                    SpriteManager.DrawSprite(spriteBatch, "SprBowKnock", Position + new Vector2(0, -21 * Game1.pixelScale), Color.White, depth, 0, flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
+                case 2:
+                case 3:
+                    SpriteManager.DrawSprite(spriteBatch, bowSprite, Position + new Vector2(0, -21 * Game1.pixelScale), Color.White, depth - 2, aim, flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
                     break;
             }
         }
