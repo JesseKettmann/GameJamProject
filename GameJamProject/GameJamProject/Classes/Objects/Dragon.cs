@@ -30,10 +30,12 @@ namespace GameJamProject
         public bool started = false;
         public bool canStart = false;
         public bool alive = true;
-        private float deadTime;
+        public float deadTime;
         private int deadSegments = 0;
         private float deathSpeed = 0;
         private float deadAlpha = 0;
+
+
 
         float startY;
         public float hitstop = 0;
@@ -50,6 +52,8 @@ namespace GameJamProject
             windSound.IsLooped = true;
             windSound.Volume = 0;
             windSound.Play();
+
+            
         }
 
         public override void Update(GameTime gameTime)
@@ -108,6 +112,8 @@ namespace GameJamProject
                 if (deadSegments > deadSegmentsPrev)
                     SoundManager.PlaySoundEffect("hit", (float)Math.Pow(0.95f, deadSegments));
                 windSound.Volume = MathHelper.Lerp(windSound.Volume, 0, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
+            
+            
             } else {
                 if (Input.KeyDown(Keys.Space))
                     windSound.Volume = MathHelper.Lerp(windSound.Volume, 1f, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
@@ -141,41 +147,48 @@ namespace GameJamProject
                 o--;
             }
             o--;
-            thisPoint = SegmentPositions[o];
-            Vector2 nextPoint;
-            float angle = headAngle;
-            for (int i = 0; i < length; i ++)
+            try
             {
-                // Set sprite
-                 sprite = "SprDragonBody";
-                if (i == legPosition || i == 2 * legPosition + 1)
-                    sprite = "SprDragonArm";
-                if (i == length - 1)
-                    sprite = "SprDragonTail";
-                if (!alive && deadSegments > i)
-                    sprite += "Skeleton";
+                thisPoint = SegmentPositions[o];
+                Vector2 nextPoint;
+                float angle = headAngle;
+                for (int i = 0; i < length; i++)
+                {
+                    // Set sprite
+                    sprite = "SprDragonBody";
+                    if (i == legPosition || i == 2 * legPosition + 1)
+                        sprite = "SprDragonArm";
+                    if (i == length - 1)
+                        sprite = "SprDragonTail";
+                    if (!alive && deadSegments > i)
+                        sprite += "Skeleton";
 
-                // Find next point
-                try
-                {
-                    while (Vector2.Distance(thisPoint, SegmentPositions[o]) < segmentLength)
-                        o++;
-                    o--;
-                    nextPoint = SegmentPositions[o];
-                    angle = Extensions.GetAngle(thisPoint, nextPoint);
-                } catch
-                {
-                    nextPoint = new Vector2(0);
-                    segmentListSize++;
-                    sprite = "SprDragonTail";
-                    i = length;
+                    // Find next point
+                    try
+                    {
+                        while (Vector2.Distance(thisPoint, SegmentPositions[o]) < segmentLength)
+                            o++;
+                        o--;
+                        nextPoint = SegmentPositions[o];
+                        angle = Extensions.GetAngle(thisPoint, nextPoint);
+                    }
+                    catch
+                    {
+                        nextPoint = new Vector2(0);
+                        segmentListSize++;
+                        sprite = "SprDragonTail";
+                        i = length;
+                    }
+                    flipped = SpriteEffects.None;
+                    if (Math.Abs(Extensions.AngleDifference(angle, (float)Math.PI)) < (float)Math.PI / 2)
+                        flipped = SpriteEffects.FlipVertically;
+                    SpriteManager.DrawSprite(spriteBatch, sprite, thisPoint, Color.White, -i, angle, flipped);
+                    thisPoint = nextPoint;
                 }
-                flipped = SpriteEffects.None;
-                if (Math.Abs(Extensions.AngleDifference(angle, (float)Math.PI)) < (float)Math.PI / 2)
-                    flipped = SpriteEffects.FlipVertically;
-                SpriteManager.DrawSprite(spriteBatch, sprite, thisPoint, Color.White, -i, angle, flipped);
-                thisPoint = nextPoint;
+
             }
+            catch { return; }
+
         }
     }
 }

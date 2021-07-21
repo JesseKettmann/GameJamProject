@@ -23,12 +23,19 @@ namespace GameJamProject
             }
         }
         private int _score = 0;
-        public static Dragon dragon;
+        public Dragon dragon;
         float boundary = 0;
         float cursor = 0;
+        bool dead = false;
+        bool newHighscore = false;
 
         ScoreText scoreText;
         Menu menu;
+
+        Text deathText;
+        Text highScore;
+
+
         public Level()
         {
             dragon = new Dragon(new Vector2(-8 * Game1.pixelScale, Game1.gameInstance.viewSize.Y / 2));
@@ -41,7 +48,16 @@ namespace GameJamProject
             scoreText.SetColor(Game1.gameInstance.White);
 
             menu = new Menu(Game1.gameInstance.viewSize.ToVector2()/2f, SpriteManager.GetFont("MediumFont"));
+            deathText = new Text(Game1.gameInstance.viewSize.ToVector2() / 2f, SpriteManager.GetFont("MediumFont"));
+            deathText.SetText("Press [Space] to restart");
+            deathText.SetColor(Game1.gameInstance.White);
+
+            highScore = new Text(new Vector2(Game1.gameInstance.viewSize.X/2f, 170), SpriteManager.GetFont("MediumFont"));
+            highScore.SetText("Highscore: ");
+            highScore.SetColor(Game1.gameInstance.White);
         }
+
+        float deathTime = 0.0f;
 
         public override void Update(GameTime gameTime)
         {
@@ -54,9 +70,20 @@ namespace GameJamProject
 
             base.Update(gameTime);
 
+            if(!dead && !dragon.alive)
+            {
+                dead = true;
+                if(score > HighscoreManager.Highscore)
+                {
+                    newHighscore = true;
+                    HighscoreManager.SetHighscore(score);
+                }
+            }
+
             // Spawn buildings
             if (menu.playing)
             {
+                
                 dragon.canStart = true;
                 if (dragon.started)
                 {
@@ -69,6 +96,20 @@ namespace GameJamProject
             } else
             {
                 menu.Update(gameTime);
+            }
+            if (!dragon.alive)
+            {
+                deathTime = (float)gameTime.TotalGameTime.TotalSeconds - dragon.deadTime;
+
+                if(deathTime > 1f)
+                {
+                    if (Input.KeyPressed(Keys.Space))
+                    {
+                        Game1.gameInstance.gamestate = new Level();
+                    }
+
+                }
+
             }
             cursor = Math.Max(Camera.Location.X + Game1.gameInstance.viewSize.X / 2 + 100, cursor);
         }
@@ -97,6 +138,27 @@ namespace GameJamProject
                 scoreText.Draw(spriteBatch);
 
             }
+
+            if (!dragon.alive)
+            {
+                if (deathTime > 1)
+                {
+                    deathText.Draw(spriteBatch);
+                    int highScore = HighscoreManager.Highscore;
+                    if (highScore > -1)
+                    {
+                        if (!newHighscore)
+                        {
+                            this.highScore.SetText("Highscore: " + highScore);
+                        } else
+                        {
+                            this.highScore.SetText("New Highscore!!!");
+                        }
+                        this.highScore.Draw(spriteBatch);
+                    }
+                }
+            }
+
             base.DrawUI(spriteBatch);
         }
     }

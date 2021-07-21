@@ -56,6 +56,8 @@ namespace GameJamProject
             menuItems.Add(playText);
             menuItems.Add(exitText);
 
+
+
             UpdateSelected();
 
         }
@@ -72,6 +74,7 @@ namespace GameJamProject
                 CreditsText1.Draw(spriteBatch);
                 CreditsText2.Draw(spriteBatch);
             }
+
 
 
             //Vector2 size = font.MeasureString(text);
