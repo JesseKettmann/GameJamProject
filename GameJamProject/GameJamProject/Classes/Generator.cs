@@ -36,6 +36,7 @@ namespace GameJamProject
                 SpawnTower();
             } else // outpost
             {
+                float startCursor = cursor + 30 * Game1.pixelScale;
                 SpawnGate();
                 if (random.NextDouble() < 0.5f)
                     SpawnTower();
@@ -54,6 +55,11 @@ namespace GameJamProject
                 SpawnList(structures);
                 if (random.NextDouble() < 0.5f)
                     SpawnTower();
+
+                // Spawn samurai
+                int samurai = (int)((cursor - startCursor) * 0.003f);
+                for (int i = 0; i < samurai; i ++)
+                    objects.Add(new Samurai(new Vector2(startCursor + (cursor - startCursor) * (float)random.NextDouble(), ground)));
             }
 
             // Return new outpostposition

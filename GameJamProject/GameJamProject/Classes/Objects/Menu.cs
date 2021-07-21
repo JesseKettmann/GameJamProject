@@ -14,6 +14,9 @@ namespace GameJamProject
         public bool playing = false;
         int selectedIndex = 0;
 
+        Text CreditsText1;
+        Text CreditsText2;
+
         List<Text> menuItems;
         List<string> menuLabels;
 
@@ -27,6 +30,13 @@ namespace GameJamProject
             menuLabels = new List<string>();
             menuLabels.Add("Play");
             menuLabels.Add("Exit");
+
+            CreditsText1 = new Text(position + new Vector2(0, -330), font);
+            CreditsText1.SetText("Created by Jesse Kettmann and Luuk van den Hoven\n");
+            CreditsText1.SetColor(Game1.gameInstance.White);
+            CreditsText2 = new Text(position + new Vector2(0, -330), font);
+            CreditsText2.SetText("\nfor the eight Bored Pixels Jam, 2021");
+            CreditsText2.SetColor(Game1.gameInstance.White);
 
             menuItems = new List<Text>();
 
@@ -59,6 +69,8 @@ namespace GameJamProject
                     t.Draw(spriteBatch);
                 }
                 pointer.Draw(spriteBatch);
+                CreditsText1.Draw(spriteBatch);
+                CreditsText2.Draw(spriteBatch);
             }
 
 

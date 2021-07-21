@@ -96,6 +96,7 @@ namespace GameJamProject
                     alive = false;
                     deadTime = (float)gameTime.TotalGameTime.TotalSeconds;
                     deathSpeed = Math.Max(-0.01f * (length - 6) + 0.16f, 0.05f);
+                    Camera.Shake(8, 0.2f, 1);
                 }
             }
             if (!alive)
