@@ -35,7 +35,7 @@ namespace GameJamProject
         private float deathSpeed = 0;
         private float deadAlpha = 0;
 
-
+        private double startTime = -1f;
 
         float startY;
         public float hitstop = 0;
@@ -56,6 +56,10 @@ namespace GameJamProject
 
         public override void Update(GameTime gameTime)
         {
+            if(startTime == -1)
+            {
+                startTime = gameTime.TotalGameTime.TotalSeconds;
+            }
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (hitstop < 0.0001f && alive)
             {
@@ -66,7 +70,8 @@ namespace GameJamProject
                 }
                 else
                 {
-                    direction = Math.Sign(Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10) + (Position.Y - startY) / 200);
+                    //System.Diagnostics.Debug.WriteLine(Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10));
+                    direction = Math.Sign(Math.Cos((gameTime.TotalGameTime.TotalSeconds-startTime)*10) + (Position.Y - startY) / 200);
                 }
                 
                 headAngle += direction * turnSpeed * deltaTime;

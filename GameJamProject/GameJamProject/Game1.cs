@@ -156,7 +156,7 @@ namespace GameJamProject
             graphicsDevice.SetRenderTarget(renderTarget);
             graphicsDevice.Clear(Orange);
 
-            _spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: cameraMatrix, samplerState: SamplerState.PointClamp);
+            _spriteBatch.Begin(SpriteSortMode.FrontToBack, transformMatrix: Camera.TransformMatrix, samplerState: SamplerState.PointClamp);
             gamestate.Draw(_spriteBatch);
             _spriteBatch.End();
 
