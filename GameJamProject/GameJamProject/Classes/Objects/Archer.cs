@@ -35,7 +35,7 @@ namespace GameJamProject
                 dragon = level.dragon;
                 if (dragon == null)
                     return;
-                if (Camera.Location.X + Camera.Bounds.Width / 2 > Position.X && dragon.Position.X < Position.X - 200)
+                if (Camera.Location.X + Camera.Bounds.Width / 2 > Position.X && dragon.Position.X < Position.X)
                 {
                     timeToFire -= deltaTime / 1000;
                     coolDown -= deltaTime / 1000;
@@ -53,13 +53,18 @@ namespace GameJamProject
                         case 1:
                         case 2:
                             aimTarget = Extensions.GetAngle(Position + new Vector2(0, -21 * Game1.pixelScale), dragon.Position + new Vector2(0, -200)) + aimExtra;
-                            aim += (aimTarget - aim) * 0.003f * deltaTime;
+                            aimTarget = MathHelper.Clamp(aimTarget, -(float)Math.PI * 0.65f, (float)Math.PI * 0.65f);
+                            aim += (aimTarget - aim) * 0.0035f * deltaTime;
                             Sprite = "SprArcherTorso";
                             bowSprite = state == 1 ? "SprBowKnock" : "SprBowDrawn";
-                            if (timeToFire <= 0)
+                            if (timeToFire <= 0 && dragon.alive)
                             {
                                 state ++;
                                 timeToFire = 0.2f;
+                            }
+                            if (dragon.Position.X > Position.X - 200)
+                            {
+                                state = 1;
                             }
                             break;
                         case 3:
