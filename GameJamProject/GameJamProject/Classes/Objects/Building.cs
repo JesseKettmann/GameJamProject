@@ -26,7 +26,7 @@ namespace GameJamProject
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            SpriteManager.DrawSprite(spriteBatch, Sprite, Position, Color.White, -9500, 0, flipped ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+            SpriteManager.DrawSprite(spriteBatch, Sprite, Position, Color.White, -9900, 0, flipped ? SpriteEffects.FlipHorizontally : SpriteEffects.None);
         }
     }
 }

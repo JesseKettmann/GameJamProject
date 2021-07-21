@@ -41,7 +41,7 @@ namespace GameJamProject
 
             //25, 14, 14 = zwart
             //
-            scoreText.SetColor(new Color(214, 214, 206));
+            scoreText.SetColor(Game1.gameInstance.White);
         }
 
         public override void Update(GameTime gameTime)
