@@ -14,7 +14,7 @@ namespace GameJamProject
         float walkSpeed = 0.1f;
 
 
-        public Samurai(Vector2 position) : base(position, "SprSamurai1", 15, -9700)
+        public Samurai(Vector2 position, int depthAdd = 0) : base(position, "SprSamurai1", 15, -9700 + depthAdd)
         {
             phaseExtra = (float)Game1.random.NextDouble();
         }
