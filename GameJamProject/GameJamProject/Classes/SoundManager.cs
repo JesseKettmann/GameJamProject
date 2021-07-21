@@ -31,5 +31,16 @@ namespace GameJamProject
                 effect.Play();
             }
         }
+
+        public static SoundEffectInstance PlaySoundEffectInstance(string name)
+        {
+            SoundEffect effect;
+            if (soundeffects.TryGetValue(name, out effect))
+            {
+                SoundEffectInstance e = effect.CreateInstance();
+                return e;
+            }
+            return null;
+        }
     }
 }
