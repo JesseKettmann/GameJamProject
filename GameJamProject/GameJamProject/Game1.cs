@@ -122,7 +122,6 @@ namespace GameJamProject
 
             SpriteManager.AddSprite("SprPlaceholder", "TexBuildings", new Vector2(0, 0), new Rectangle(288, 42, 16, 22));
 
-            SpriteManager.AddFont("BigFont", "BigFont");
             SpriteManager.AddFont("ScoreFont", "ScoreFont");
             SpriteManager.AddFont("MediumFont", "MediumFont");
             SpriteManager.AddFont("SmallFont", "SmallFont");

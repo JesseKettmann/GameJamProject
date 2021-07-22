@@ -49,13 +49,6 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/skybox.png
 
-#begin Fonts/BigFont.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:Fonts/BigFont.spritefont
-
 #begin Fonts/MediumFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
