@@ -125,6 +125,7 @@ namespace GameJamProject
             SpriteManager.AddFont("BigFont", "BigFont");
             SpriteManager.AddFont("ScoreFont", "ScoreFont");
             SpriteManager.AddFont("MediumFont", "MediumFont");
+            SpriteManager.AddFont("SmallFont", "SmallFont");
 
             SoundManager.LoadSoundEffect("block", "Audio/block");
             SoundManager.LoadSoundEffect("bone", "Audio/bone");

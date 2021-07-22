@@ -33,12 +33,12 @@ namespace GameJamProject
             menuLabels.Add("Music");
             menuLabels.Add("Exit");
 
-            CreditsText1 = new Text(position + new Vector2(0, -330), font);
-            CreditsText1.SetText("Created by Jesse Kettmann and Luuk van den Hoven\n");
-            CreditsText1.SetColor(Game1.gameInstance.White);
-            CreditsText2 = new Text(position + new Vector2(0, -330), font);
-            CreditsText2.SetText("\nfor the eight Bored Pixels Jam, 2021");
-            CreditsText2.SetColor(Game1.gameInstance.White);
+            CreditsText1 = new Text(position + new Vector2(0, 360), SpriteManager.GetFont("SmallFont"));
+            CreditsText1.SetText("Created by Jesse Kettmann and Luuk van den Hoven for the eight Bored Pixels Jam, 2021");
+            CreditsText1.SetColor(Game1.gameInstance.Orange);
+            CreditsText2 = new Text(position + new Vector2(0, 355), font);
+            CreditsText2.SetText("");
+            CreditsText2.SetColor(Game1.gameInstance.Orange);
 
             menuItems = new List<Text>();
 
@@ -46,19 +46,19 @@ namespace GameJamProject
             Text musicText;
             Text exitText;
 
-            playText = new Text(position + new Vector2(0, 180), font);
+            playText = new Text(position + new Vector2(0, 150), font);
             playText.SetText(menuLabels[0]);
-            playText.SetColor(new Color(25, 14, 14));
-            musicText = new Text(position + new Vector2(0, 230), font);
+            playText.SetColor(Game1.gameInstance.Black);
+            musicText = new Text(position + new Vector2(0, 200), font);
             musicText.SetText(menuLabels[1]);
-            musicText.SetColor(new Color(25, 14, 14));
-            exitText = new Text(position + new Vector2(0, 280), font);
+            musicText.SetColor(Game1.gameInstance.Black);
+            exitText = new Text(position + new Vector2(0, 250), font);
             exitText.SetText(menuLabels[2]);
-            exitText.SetColor(new Color(25, 14, 14));
+            exitText.SetColor(Game1.gameInstance.Black);
 
-            pointer = new Text(position + new Vector2(-50, 180), font);
+            pointer = new Text(position + new Vector2(-50, 150), font);
             pointer.SetText(">");
-            pointer.SetColor(new Color(25, 14, 14));
+            pointer.SetColor(Game1.gameInstance.Black);
 
             menuItems.Add(playText);
             menuItems.Add(musicText);
@@ -127,7 +127,7 @@ namespace GameJamProject
                 if (selectedIndex == 1)
                 {
                     menuItems[1].SetText("Music " + Math.Round((Settings.volume*100)) + "%");
-                    pointer.Position = Position + new Vector2(-100, 180 + (selectedIndex * 50));
+                    pointer.Position = Position + new Vector2(-100, 150 + (selectedIndex * 50));
                 }
                 else
                 {
@@ -147,7 +147,7 @@ namespace GameJamProject
                 selectedIndex = 0;
             }
 
-            pointer.Position = Position + new Vector2(-50, 180 + (selectedIndex * 50));
+            pointer.Position = Position + new Vector2(-50, 150 + (selectedIndex * 50));
         }
     }
 }

@@ -39,6 +39,7 @@ namespace GameJamProject
         Text highScore;
         Text PausedText;
         Text helpText;
+        Text titleText;
 
         float helpAlpha = -2f;
 
@@ -74,6 +75,10 @@ namespace GameJamProject
             helpText = new Text(new Vector2(Game1.gameInstance.viewSize.X / 2f, 170), SpriteManager.GetFont("MediumFont"));
             helpText.SetText("Hold [Space] to fly up");
             helpText.SetColor(Game1.gameInstance.Black * helpAlpha);
+
+            titleText = new Text(new Vector2(Game1.gameInstance.viewSize.X / 2f, 170), SpriteManager.GetFont("ScoreFont"));
+            titleText.SetText("Shenlong");
+            titleText.SetColor(Game1.gameInstance.White);
         }
 
         float deathTime = 0.0f;
@@ -163,6 +168,7 @@ namespace GameJamProject
             if (!menu.playing)
             {
                 menu.Draw(spriteBatch);
+                titleText.Draw(spriteBatch);
             }
             else
             {

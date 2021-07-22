@@ -196,3 +196,10 @@
 /processorParam:Quality=Best
 /build:Audio/volume2.wav
 
+#begin Fonts/SmallFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/SmallFont.spritefont
+
