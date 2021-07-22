@@ -31,7 +31,7 @@ namespace GameJamProject
         public override void Draw(SpriteBatch spriteBatch)
         {
             Vector2 size = font.MeasureString(text);
-            spriteBatch.DrawString(font, text, (Position-size/2f).ToPoint().ToVector2(), color);
+            spriteBatch.DrawString(font, text, (Position-size/2f).ToPoint().ToVector2(), color, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
             base.Draw(spriteBatch);
         }
 

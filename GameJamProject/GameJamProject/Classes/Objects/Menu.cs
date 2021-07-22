@@ -109,17 +109,18 @@ namespace GameJamProject
 
                 if (Input.KeyPressed(Keys.Enter) || Input.KeyPressed(Keys.Space))
                 {
-                    SoundManager.PlaySoundEffect("start");
                     if (selectedIndex == 2)
                     {
                         Game1.gameInstance.Exit();
                     }
                     else if (selectedIndex == 0)
                     {
+                        SoundManager.PlaySoundEffect("start", 0.7f);
                         playing = true;
                     } else if(selectedIndex == 1)
                     {
                         Settings.ScrollVolume();
+                        SoundManager.PlaySoundEffect("volume", Settings.volume, 0, 0);
                         MediaPlayer.Volume = Settings.volume*0.2f;
                     }
                 }

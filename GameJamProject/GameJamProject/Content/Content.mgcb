@@ -190,3 +190,9 @@
 /processorParam:Quality=Best
 /build:Audio/unpause.wav
 
+#begin Audio/volume2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/volume2.wav
+

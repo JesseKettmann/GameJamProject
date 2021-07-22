@@ -136,6 +136,7 @@ namespace GameJamProject
             SoundManager.LoadSoundEffect("shoot", "Audio/shoot4");
             SoundManager.LoadSoundEffect("start", "Audio/start3");
             SoundManager.LoadSoundEffect("unpause", "Audio/unpause");
+            SoundManager.LoadSoundEffect("volume", "Audio/volume2");
             SoundManager.LoadSoundEffect("wind", "Audio/Wind");
 
 

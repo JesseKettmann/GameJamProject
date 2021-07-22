@@ -16,7 +16,6 @@ namespace GameJamProject
             set {
                 _score = value;
                 scoreText.Bounce();
-                // if (dragon.length - 6 < (Math.Log(value / 30 + 50) / Math.Log(1.04f)) - 100)
                 if (dragon.length - 3 < value / 25)
                 {
                     dragon.length++;
@@ -39,6 +38,9 @@ namespace GameJamProject
         Text deathText;
         Text highScore;
         Text PausedText;
+        Text helpText;
+
+        float helpAlpha = -2f;
 
 
         public Level()
@@ -68,6 +70,10 @@ namespace GameJamProject
             PausedText = new Text(new Vector2(Game1.gameInstance.viewSize.X / 2f, 170), SpriteManager.GetFont("MediumFont"));
             PausedText.SetText("Game Paused");
             PausedText.SetColor(Game1.gameInstance.Black);
+
+            helpText = new Text(new Vector2(Game1.gameInstance.viewSize.X / 2f, 170), SpriteManager.GetFont("MediumFont"));
+            helpText.SetText("Hold [Space] to fly up");
+            helpText.SetColor(Game1.gameInstance.Black * helpAlpha);
         }
 
         float deathTime = 0.0f;
@@ -110,6 +116,11 @@ namespace GameJamProject
                         paused = !paused;
                         SoundManager.PlaySoundEffect(paused ? "pause" : "unpause");
                     }
+                    helpText.SetColor(Game1.gameInstance.Black * 0);
+                } else
+                {
+                    helpAlpha = Math.Min(helpAlpha + 0.67f * (float)gameTime.ElapsedGameTime.TotalSeconds, 1);
+                    helpText.SetColor(Game1.gameInstance.Black * helpAlpha);
                 }
             } else
             {
@@ -124,7 +135,7 @@ namespace GameJamProject
                 {
                     if (Input.KeyPressed(Keys.Space))
                     {
-                        SoundManager.PlaySoundEffect("start");
+                        SoundManager.PlaySoundEffect("start", 0.7f);
                         Game1.gameInstance.gamestate = new Level();
                     }
 
@@ -171,16 +182,20 @@ namespace GameJamProject
                         if (!newHighscore)
                         {
                             this.highScore.SetText("Highscore: " + highScore);
-                        } else
+                        }
+                        else
                         {
                             this.highScore.SetText("New Highscore!!!");
                         }
                         this.highScore.Draw(spriteBatch);
                     }
                 }
-            } else if (paused)
+            }
+            else
             {
-                PausedText.Draw(spriteBatch);
+                if (paused)
+                    PausedText.Draw(spriteBatch);
+                else helpText.Draw(spriteBatch);
             }
 
             base.DrawUI(spriteBatch);

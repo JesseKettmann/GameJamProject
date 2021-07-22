@@ -13,12 +13,14 @@ namespace GameJamProject
 
         public static void ScrollVolume()
         {
-            SetVolume(volume + 0.1f);
+            SetVolume(volume - 0.1f);
         }
         public static void SetVolume(float vol)
         {
-            volume = vol % 1.1f;
-            MediaPlayer.Volume = volume*0.2f;
+            volume = Math.Abs(vol);
+            if (vol < -0.01f)
+                volume = 1f;
+            MediaPlayer.Volume = volume * 0.2f;
             try
             {
                 File.WriteAllText("Volume.txt", Math.Round(volume*100).ToString());
@@ -36,12 +38,10 @@ namespace GameJamProject
             }
             catch
             {
-                volume = 1;
+                volume = 0.7f;
                 MediaPlayer.Volume = volume * 0.2f;
 
             }
         }
-
-
     }
 }

@@ -58,9 +58,7 @@ namespace GameJamProject
         public override void Update(GameTime gameTime)
         {
             if(startTime == -1)
-            {
                 startTime = gameTime.TotalGameTime.TotalSeconds;
-            }
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             if (hitstop < 0.0001f && alive)
             {
@@ -158,7 +156,7 @@ namespace GameJamProject
                 if (died)
                 {
                     // Die
-                    SoundManager.PlaySoundEffect("death", 0.6f);
+                    SoundManager.PlaySoundEffect("death", 0.45f);
                     alive = false;
                     deadTime = (float)gameTime.TotalGameTime.TotalSeconds;
                     deathSpeed = Math.Max(-0.01f * (length - 6) + 0.14f, 0.07f);
@@ -172,7 +170,7 @@ namespace GameJamProject
                 int deadSegmentsPrev = deadSegments;
                 deadSegments = Math.Min((int)(deadTimeTotal / deathSpeed), length);
                 if (deadSegments > deadSegmentsPrev)
-                    SoundManager.PlaySoundEffect("bone", (float)Math.Pow(0.95f, deadSegments) * 0.7f);
+                    SoundManager.PlaySoundEffect("bone", (float)Math.Pow(0.95f, deadSegments) * 0.5f);
                 windSound.Volume = MathHelper.Lerp(windSound.Volume, 0, (float)gameTime.ElapsedGameTime.TotalSeconds * 3f);
             
             

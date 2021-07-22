@@ -39,7 +39,8 @@ namespace GameJamProject
             } else // outpost
             {
                 float startCursor = cursor + 30 * Game1.pixelScale;
-                SpawnGate();
+                if (random.NextDouble() < 0.5f)
+                    SpawnGate();
                 if (random.NextDouble() < 0.5f)
                     SpawnTower();
                 List<int> structures = new List<int>();
@@ -66,7 +67,7 @@ namespace GameJamProject
             }
 
             // Return new outpostposition
-            return cursor + 1000 + 800 * (float)random.NextDouble();
+            return cursor + 900 + 900 * (float)random.NextDouble();
         }
 
         private static void Shuffle(List<int> list)

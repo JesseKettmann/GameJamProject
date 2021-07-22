@@ -52,6 +52,7 @@ namespace GameJamProject
                     hitstop = 80f;
                     destroyed = true;
                     gravity = -10;
+                    level.objects.Add(new Popup(level.dragon.Position + new Vector2(6 * Game1.pixelScale, 0), score, (float)gameTime.TotalGameTime.TotalSeconds));
                 }
             }
             base.Update(gameTime);
