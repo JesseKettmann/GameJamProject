@@ -30,6 +30,7 @@ namespace GameJamProject
         float cursor = 0;
         bool dead = false;
         bool newHighscore = false;
+        bool paused = false;
 
         ScoreText scoreText;
         ScoreText subScoreText;
@@ -37,6 +38,7 @@ namespace GameJamProject
 
         Text deathText;
         Text highScore;
+        Text PausedText;
 
 
         public Level()
@@ -62,6 +64,10 @@ namespace GameJamProject
             highScore = new Text(new Vector2(Game1.gameInstance.viewSize.X/2f, 170), SpriteManager.GetFont("MediumFont"));
             highScore.SetText("Highscore: ");
             highScore.SetColor(Game1.gameInstance.White);
+
+            PausedText = new Text(new Vector2(Game1.gameInstance.viewSize.X / 2f, 170), SpriteManager.GetFont("MediumFont"));
+            PausedText.SetText("Game Paused");
+            PausedText.SetColor(Game1.gameInstance.Black);
         }
 
         float deathTime = 0.0f;
@@ -71,12 +77,13 @@ namespace GameJamProject
             boundary = Math.Max(dragon.Position.X + (menu.playing ? 500 : 360), boundary);
             Camera.targetX = Math.Max(boundary * 0.2f + (dragon.Position.X + (menu.playing ? 500 : 360)) * 0.8f, Game1.gameInstance.viewSize.X / 2);
             Camera.UpdateShake(gameTime);
-            if (dragon.alive)
+            if (dragon.alive && !paused)
                 Camera.Update(gameTime);
             scoreText.SetText(score.ToString());
             scoreText.Update(gameTime);
 
-            base.Update(gameTime);
+            if (!paused)
+                base.Update(gameTime);
 
             if(!dead && !dragon.alive)
             {
@@ -91,7 +98,6 @@ namespace GameJamProject
             // Spawn buildings
             if (menu.playing)
             {
-                
                 dragon.canStart = true;
                 if (dragon.started)
                 {
@@ -99,14 +105,19 @@ namespace GameJamProject
                     {
                         cursor = Generator.SpawnOutpost(cursor, objects, difficulty);
                     }
+                    if (!dead && Input.KeyPressed(Keys.Escape))
+                    {
+                        paused = !paused;
+                        SoundManager.PlaySoundEffect(paused ? "pause" : "unpause");
+                    }
                 }
-
             } else
             {
                 menu.Update(gameTime);
             }
             if (!dragon.alive)
             {
+                paused = false;
                 deathTime = (float)gameTime.TotalGameTime.TotalSeconds - dragon.deadTime;
 
                 if(deathTime > 1f)
@@ -167,6 +178,9 @@ namespace GameJamProject
                         this.highScore.Draw(spriteBatch);
                     }
                 }
+            } else if (paused)
+            {
+                PausedText.Draw(spriteBatch);
             }
 
             base.DrawUI(spriteBatch);
