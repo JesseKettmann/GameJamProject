@@ -28,6 +28,7 @@ namespace GameJamProject
         // Colors
         public Color White = new Color(214, 214, 206);
         public Color Orange = new Color(161, 88, 21);
+        public Color Black = new Color(25, 14, 14);
 
         public Game1()
         {
@@ -129,9 +130,11 @@ namespace GameJamProject
             SoundManager.LoadSoundEffect("death", "Audio/death2");
             SoundManager.LoadSoundEffect("destroy", "Audio/destroy");
             SoundManager.LoadSoundEffect("kill", "Audio/kill");
+            SoundManager.LoadSoundEffect("pause", "Audio/pause");
             SoundManager.LoadSoundEffect("select", "Audio/select");
             SoundManager.LoadSoundEffect("shoot", "Audio/shoot4");
             SoundManager.LoadSoundEffect("start", "Audio/start3");
+            SoundManager.LoadSoundEffect("unpause", "Audio/unpause");
             SoundManager.LoadSoundEffect("wind", "Audio/Wind");
 
 
@@ -140,13 +143,6 @@ namespace GameJamProject
 
         protected override void Update(GameTime gameTime)
         {
-            #region remove later
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            #endregion
-
             // Get the current inputs
             Input.Update();
 

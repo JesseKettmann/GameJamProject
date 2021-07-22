@@ -178,3 +178,15 @@
 /processorParam:Quality=Best
 /build:Audio/select.wav
 
+#begin Audio/pause.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/pause.wav
+
+#begin Audio/unpause.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/unpause.wav
+
