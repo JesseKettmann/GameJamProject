@@ -16,7 +16,7 @@ namespace GameJamProject
             soundeffects = new Dictionary<string, SoundEffect>();
             song = Game1.gameInstance.Content.Load<Song>("Audio/road_to_the_stronghold");
             MediaPlayer.Play(song);
-            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.Volume = Settings.volume*0.2f;
             MediaPlayer.IsRepeating = true;
         }
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,6 +30,7 @@ namespace GameJamProject
 
             menuLabels = new List<string>();
             menuLabels.Add("Play");
+            menuLabels.Add("Music");
             menuLabels.Add("Exit");
 
             CreditsText1 = new Text(position + new Vector2(0, -330), font);
@@ -41,12 +43,17 @@ namespace GameJamProject
             menuItems = new List<Text>();
 
             Text playText;
+            Text musicText;
             Text exitText;
+
             playText = new Text(position + new Vector2(0, 180), font);
             playText.SetText(menuLabels[0]);
             playText.SetColor(new Color(25, 14, 14));
-            exitText = new Text(position + new Vector2(0, 230), font);
-            exitText.SetText(menuLabels[1]);
+            musicText = new Text(position + new Vector2(0, 230), font);
+            musicText.SetText(menuLabels[1]);
+            musicText.SetColor(new Color(25, 14, 14));
+            exitText = new Text(position + new Vector2(0, 280), font);
+            exitText.SetText(menuLabels[2]);
             exitText.SetColor(new Color(25, 14, 14));
 
             pointer = new Text(position + new Vector2(-50, 180), font);
@@ -54,6 +61,7 @@ namespace GameJamProject
             pointer.SetColor(new Color(25, 14, 14));
 
             menuItems.Add(playText);
+            menuItems.Add(musicText);
             menuItems.Add(exitText);
 
 
@@ -102,14 +110,28 @@ namespace GameJamProject
                 if (Input.KeyPressed(Keys.Enter) || Input.KeyPressed(Keys.Space))
                 {
                     SoundManager.PlaySoundEffect("start");
-                    if (selectedIndex == 1)
+                    if (selectedIndex == 2)
                     {
                         Game1.gameInstance.Exit();
                     }
                     else if (selectedIndex == 0)
                     {
                         playing = true;
+                    } else if(selectedIndex == 1)
+                    {
+                        Settings.ScrollVolume();
+                        MediaPlayer.Volume = Settings.volume*0.2f;
                     }
+                }
+                if (selectedIndex == 1)
+                {
+                    menuItems[1].SetText("Music " + Math.Round((Settings.volume*100)) + "%");
+                    pointer.Position = Position + new Vector2(-100, 180 + (selectedIndex * 50));
+                }
+                else
+                {
+                    menuItems[1].SetText("Music");
+
                 }
             }
             base.Update(gameTime);
