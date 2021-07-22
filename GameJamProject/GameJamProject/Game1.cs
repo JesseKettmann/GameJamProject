@@ -63,6 +63,7 @@ namespace GameJamProject
             renderTarget = new RenderTarget2D(graphicsDevice, viewSize.X, viewSize.Y, false, SurfaceFormat.Color, DepthFormat.None, 0, RenderTargetUsage.PreserveContents);
             SpriteManager.Initialise();
             SoundManager.Initialise();
+            Settings.RetrieveVolume();
 
             // Textures
             SpriteManager.AddTexture("TexDragon", "chinese_dragon");

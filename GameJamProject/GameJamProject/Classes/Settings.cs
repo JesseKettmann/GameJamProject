@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Media;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace GameJamProject
@@ -11,10 +13,34 @@ namespace GameJamProject
 
         public static void ScrollVolume()
         {
-            volume += 0.1f;
-            volume %= 1.1f;
+            SetVolume(volume + 0.1f);
+        }
+        public static void SetVolume(float vol)
+        {
+            volume = vol % 1.1f;
+            MediaPlayer.Volume = volume*0.2f;
+            try
+            {
+                File.WriteAllText("Volume.txt", Math.Round(volume*100).ToString());
+            }
+            catch { return; }
         }
 
+        public static void RetrieveVolume()
+        {
+            try
+            {
+                string score = File.ReadAllText("Volume.txt");
+                volume = int.Parse(score)/100f;
+                MediaPlayer.Volume = volume*0.2f;
+            }
+            catch
+            {
+                volume = 1;
+                MediaPlayer.Volume = volume * 0.2f;
+
+            }
+        }
 
 
     }
